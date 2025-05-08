@@ -1,0 +1,1179 @@
+@import './variables.css';
+
+/* Estilos generales del cuerpo */
+body {
+  background-color: #111111;
+  color: #f0f0f0;
+}
+
+.container {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Estilos para las secciones con fondo */
+.py-5 {
+  background-color: #111111;
+}
+
+/* Estilos para los títulos de sección */
+.section-title {
+  color: var(--primary-yellow);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  position: relative;
+  display: inline-block;
+  margin-bottom: 2.5rem;
+  font-weight: 700;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary-gradient);
+  border-radius: 4px;
+}
+
+/* Estilos del Navbar */
+.navbar {
+  background: var(--black) !important;
+  box-shadow: var(--primary-shadow);
+  padding: 1.2rem 0;
+  border-bottom: 2px solid var(--primary-yellow);
+  min-height: 90px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.navbar-brand img {
+  height: 80px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.05);
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem !important;
+  color: var(--primary-yellow) !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--button-yellow) !important;
+  text-shadow: 0 0 8px rgba(244, 163, 0, 0.4);
+}
+
+.navbar-nav .nav-link.active {
+  color: var(--button-yellow) !important;
+  text-shadow: 0 0 8px rgba(244, 163, 0, 0.4);
+}
+
+/* Hero Section */
+.hero-section {
+  background: var(--dark-gradient);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  border-bottom: 3px solid var(--primary-yellow);
+}
+
+.hero-section h1 {
+  color: var(--primary-yellow);
+  text-shadow: 2px 2px 4px var(--dark-orange);
+}
+
+.hero-section p {
+  color: var(--light-gray);
+}
+
+/* Estilos para las tarjetas de juegos */
+.game-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  background-color: #1a1a1a;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+}
+
+.game-card .card-body {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.game-card .card-title {
+  color: var(--primary-yellow);
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.game-card .card-text {
+  color: #e0e0e0;
+  margin-bottom: 1rem;
+}
+
+/* Estilos para las tarjetas de categorías */
+.category-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #121212;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.category-card .card-body {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.category-card .card-title {
+  color: var(--primary-yellow);
+  font-weight: 600;
+}
+
+.category-card .card-text {
+  color: #cccccc;
+}
+
+.category-card .card-img {
+  transition: transform 0.3s ease;
+  height: 200px;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.category-card:hover .card-img {
+  transform: scale(1.1);
+  opacity: 0.5;
+}
+
+.category-card .card-img-overlay {
+  background: transparent;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-card:hover .card-img-overlay {
+  background: transparent;
+}
+
+.category-card .card-title {
+  color: var(--primary-yellow);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  font-size: 1.5rem;
+  margin: 0;
+  z-index: 2;
+}
+
+/* Badges y etiquetas */
+.badge.bg-primary {
+  background-color: var(--button-blue) !important;
+}
+
+.text-success {
+  color: var(--button-green) !important;
+}
+
+/* Botón del menú móvil */
+.navbar-toggler {
+  border-color: var(--primary-yellow) !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(244, 163, 0, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* Offcanvas menu styles */
+.offcanvas.bg-dark {
+  background-color: var(--black) !important;
+  border-left: 2px solid var(--primary-yellow);
+}
+
+.offcanvas-body .nav-link {
+  padding: 1rem !important;
+  border-bottom: 1px solid var(--dark-orange);
+  color: var(--primary-yellow) !important;
+}
+
+.offcanvas-body .nav-link:hover {
+  background-color: rgba(244, 163, 0, 0.1);
+}
+
+.offcanvas-body .nav-link:last-child {
+  border-bottom: none;
+}
+
+/* Ajustes del logo en el menú móvil */
+.offcanvas-header .offcanvas-title img {
+  max-height: 55px;
+  width: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar {
+    min-height: 75px;
+    padding: 0.9rem 0;
+  }
+
+  .navbar-brand img {
+    height: 60px !important;
+  }
+
+  .hero-section {
+    min-height: 40vh;
+    text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .game-card {
+    margin-bottom: 1rem;
+  }
+
+  .category-card .card-img {
+    height: 150px;
+  }
+}
+
+/* Contenedor de imágenes para mantener proporción */
+.img-hover-zoom {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: auto;
+  min-height: 150px;
+  max-height: 220px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+  border-bottom: none;
+}
+
+.img-hover-zoom img {
+  transition: transform 0.5s ease;
+  width: auto;
+  height: auto;
+  max-width: 85%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  margin: 0 auto;
+  border-bottom: 2px solid var(--primary-yellow);
+  padding-bottom: 10px;
+}
+
+.img-hover-zoom:hover img {
+  transform: scale(1.08);
+}
+
+/* Estilos para precios */
+.text-decoration-line-through {
+  color: #999999 !important;
+  font-weight: normal;
+  text-decoration: line-through;
+  opacity: 0.9;
+}
+
+/* Ajuste para que el color de texto muted sea más visible */
+.text-muted {
+  color: #999999 !important;
+}
+
+/* Estilos del carrito */
+.cart-link {
+  position: relative;
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem !important;
+  display: flex;
+  align-items: center;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ffc107;
+  color: #000;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+/* Estilos del botón de login */
+.login-button {
+  border-color: var(--primary-yellow) !important;
+  color: var(--primary-yellow) !important;
+  padding: 0.5rem 1.5rem !important;
+  font-weight: 500;
+  transition: all 0.3s ease !important;
+}
+
+.login-button:hover {
+  background-color: var(--primary-yellow) !important;
+  color: var(--black) !important;
+  border-color: var(--primary-yellow) !important;
+  transform: translateY(-2px);
+}
+
+/* Ajustes responsive para el carrito y login */
+@media (max-width: 768px) {
+  .cart-link {
+    font-size: 1.1rem;
+    padding: 0.4rem 0.8rem !important;
+  }
+
+  .cart-count {
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+  }
+
+  .login-button {
+    padding: 0.4rem 1.2rem !important;
+    font-size: 0.9rem;
+  }
+}
+
+/* Estilos para las páginas de autenticación */
+.login-card,
+.signup-card {
+  background: var(--black);
+  border: 2px solid var(--primary-yellow);
+  box-shadow: var(--primary-shadow);
+}
+
+.login-card h2,
+.signup-card h2 {
+  color: var(--primary-yellow);
+  text-shadow: 2px 2px 4px var(--dark-orange);
+}
+
+.login-card .form-label,
+.signup-card .form-label {
+  color: var(--light-gray);
+}
+
+.login-card .form-control,
+.signup-card .form-control {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--dark-orange);
+  color: var(--light-gray);
+}
+
+.login-card .form-control:focus,
+.signup-card .form-control:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 0.25rem rgba(244, 163, 0, 0.25);
+  color: white;
+}
+
+.login-card .btn-warning,
+.signup-card .btn-warning {
+  background-color: var(--primary-yellow);
+  border-color: var(--primary-yellow);
+  color: var(--black);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.login-card .btn-warning:hover,
+.signup-card .btn-warning:hover {
+  background-color: var(--dark-orange);
+  border-color: var(--dark-orange);
+  transform: translateY(-2px);
+}
+
+.login-card .btn-outline-primary,
+.signup-card .btn-outline-primary {
+  border-color: var(--primary-yellow);
+  color: var(--primary-yellow);
+}
+
+.login-card .btn-outline-primary:hover,
+.signup-card .btn-outline-primary:hover {
+  background-color: var(--primary-yellow);
+  color: var(--black);
+  transform: translateY(-2px);
+}
+
+.login-card a,
+.signup-card a {
+  color: var(--primary-yellow);
+  transition: color 0.3s ease;
+}
+
+.login-card a:hover,
+.signup-card a:hover {
+  color: var(--dark-orange);
+}
+
+/* Texto de registro */
+.login-card .signup-text,
+.signup-card .signup-text {
+  color: white;
+}
+
+/* Botones de redes sociales */
+.social-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.social-btn i {
+  font-size: 1.2rem;
+}
+
+.social-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--primary-shadow);
+}
+
+/* Estilos del carrito */
+.cart-item-image {
+  max-width: 100px;
+  height: auto;
+  object-fit: cover;
+}
+
+.quantity-control {
+  max-width: 80px;
+}
+
+.quantity-control input {
+  background-color: var(--black);
+  border: 1px solid var(--dark-orange);
+  color: var(--light-gray);
+  text-align: center;
+}
+
+.quantity-control input:focus {
+  background-color: var(--black);
+  border-color: var(--primary-yellow);
+  color: var(--light-gray);
+  box-shadow: none;
+}
+
+.cart-item-card {
+  background: var(--black);
+  border: 1px solid var(--dark-orange);
+  transition: all 0.3s ease;
+}
+
+.cart-item-card:hover {
+  border-color: var(--primary-yellow);
+  box-shadow: var(--primary-shadow);
+}
+
+.cart-total-card {
+  background: var(--black);
+  border: 2px solid var(--primary-yellow);
+}
+
+.cart-total-card h4 {
+  color: var(--primary-yellow);
+}
+
+.empty-cart-message {
+  color: var(--light-gray);
+  background: var(--black);
+  border: 1px solid var(--dark-orange);
+}
+
+.remove-item-btn {
+  color: var(--button-red) !important;
+  transition: all 0.3s ease;
+}
+
+.remove-item-btn:hover {
+  color: #ff0000 !important;
+  transform: scale(1.1);
+}
+
+/* Estilos para la sección de estadísticas (Stats Banner) */
+.stats-banner {
+  background: var(--black);
+  border-top: 2px solid var(--primary-yellow);
+  border-bottom: 2px solid var(--primary-yellow);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-yellow);
+  text-shadow: 1px 1px 2px var(--dark-orange);
+}
+
+.stat-text {
+  font-size: 1rem;
+  color: var(--light-gray);
+}
+
+/* Estilos para las categorías */
+.category-card {
+  background: var(--black);
+  border: 2px solid var(--primary-yellow);
+  transition: all 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--hover-shadow);
+}
+
+.category-icon {
+  margin: 1rem 0;
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover .category-icon {
+  transform: scale(1.1);
+}
+
+/* Estilos para la sección de newsletter */
+.newsletter-section {
+  background: var(--dark-gradient);
+  border-top: 2px solid var(--primary-yellow);
+}
+
+.newsletter-section h3 {
+  color: var(--primary-yellow);
+  text-shadow: 2px 2px 4px var(--dark-orange);
+}
+
+.newsletter-section p {
+  color: var(--light-gray);
+}
+
+.newsletter-section .form-control {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--dark-orange);
+  color: var(--light-gray);
+  padding: 0.75rem 1rem;
+}
+
+.newsletter-section .form-control:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 0.25rem rgba(244, 163, 0, 0.25);
+  color: white;
+}
+
+/* Mejoras para los botones de productos */
+.game-card .btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.game-card .btn-primary {
+  background-color: var(--button-blue);
+  border-color: var(--button-blue);
+}
+
+.game-card .btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.game-card .btn-warning {
+  background-color: var(--primary-yellow);
+  border-color: var(--primary-yellow);
+}
+
+.game-card .btn-warning:hover {
+  background-color: var(--dark-orange);
+  border-color: var(--dark-orange);
+  transform: translateY(-2px);
+}
+
+.game-card .badge {
+  padding: 0.5em 0.8em;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Mejoras para dispositivos móviles */
+@media (max-width: 768px) {
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .stat-text {
+    font-size: 0.8rem;
+  }
+  
+  .category-icon i {
+    font-size: 2rem !important;
+  }
+}
+
+/* Estilos para el nuevo navbar y buscador */
+.search-bar-container {
+  flex-grow: 1;
+  max-width: 500px;
+  margin: 0 2rem;
+}
+
+.search-input {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid var(--dark-orange) !important;
+  color: var(--light-gray) !important;
+}
+
+.search-input:focus {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: white !important;
+  box-shadow: 0 0 0 0.25rem rgba(244, 163, 0, 0.25) !important;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.category-nav {
+  background-color: var(--black);
+  border-bottom: 2px solid var(--primary-yellow);
+  padding: 0;
+}
+
+.category-nav .nav-link {
+  padding: 0.7rem 1.2rem !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  position: relative;
+  color: var(--light-gray) !important;
+  text-align: center;
+}
+
+.category-nav .nav-link:hover {
+  border-bottom-color: var(--primary-yellow);
+  color: white !important;
+  text-shadow: 0 0 10px rgba(244, 163, 0, 0.5);
+}
+
+.category-nav .nav-link.active {
+  border-bottom-color: var(--primary-yellow);
+  color: var(--primary-yellow) !important;
+  text-shadow: 0 0 8px rgba(244, 163, 0, 0.4);
+}
+
+.category-nav .nav-link:after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background-color: var(--primary-yellow);
+  transition: width 0.3s ease;
+}
+
+.category-nav .nav-link:hover:after {
+  width: 100%;
+}
+
+.category-nav .text-danger {
+  font-weight: 700;
+  color: var(--button-red) !important;
+}
+
+.category-nav .text-danger:hover {
+  color: #ff6b6b !important;
+  text-shadow: 0 0 10px rgba(255, 75, 75, 0.5);
+}
+
+/* Ajustes para móviles */
+@media (max-width: 992px) {
+  .mobile-search-container {
+    border-bottom: 2px solid var(--primary-yellow);
+  }
+  
+  .offcanvas-body .nav-link {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 0.8rem 1rem !important;
+  }
+  
+  .offcanvas-body .nav-link:active,
+  .offcanvas-body .nav-link:hover {
+    background-color: rgba(244, 163, 0, 0.1);
+    color: var(--primary-yellow) !important;
+  }
+}
+
+.mobile-search-container {
+  background-color: var(--black);
+  border-bottom: 1px solid var(--dark-orange);
+}
+
+.user-dropdown {
+  padding: 0.5rem 1rem !important;
+}
+
+.dropdown-menu-dark {
+  background-color: var(--black) !important;
+  border: 1px solid var(--primary-yellow) !important;
+}
+
+.dropdown-menu-dark .dropdown-item {
+  color: var(--light-gray);
+  transition: all 0.3s ease;
+}
+
+.dropdown-menu-dark .dropdown-item:hover {
+  background-color: rgba(244, 163, 0, 0.1);
+  color: var(--primary-yellow);
+}
+
+.dropdown-menu-dark .dropdown-divider {
+  border-top-color: var(--dark-orange);
+}
+
+.user-info {
+  border-radius: 4px;
+}
+
+/* Badges para descuentos y nuevos juegos */
+.discount-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: #ff4b4b;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.new-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: #3ce35b;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para plataformas */
+.platform-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  background-color: #1a1a1a;
+  height: 100%;
+  min-width: 200px;
+  min-height: 200px;
+  aspect-ratio: 1/1;
+}
+
+.platform-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+}
+
+.platform-card .card-body {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.platform-logo-container {
+  width: 85%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.platform-logo {
+  height: auto;
+  max-height: 100px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Panel de filtros y Cards generales */
+.card {
+  border: none;
+  border-radius: 12px;
+  background-color: #1a1a1a;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.card-header {
+  background-color: #222222;
+  border-bottom: 2px solid var(--primary-yellow);
+  padding: 1rem 1.5rem;
+  color: var(--primary-yellow);
+}
+
+.card-header h5 {
+  color: var(--primary-yellow);
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 1.5rem;
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+}
+
+/* Estilos para los formularios de filtro */
+.form-control, .form-select {
+  background-color: #2a2a2a;
+  border: 1px solid #333;
+  color: #f0f0f0;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+}
+
+.form-control:focus, .form-select:focus {
+  background-color: #2a2a2a;
+  border-color: var(--primary-yellow);
+  color: #f0f0f0;
+  box-shadow: 0 0 0 0.25rem rgba(244, 163, 0, 0.25);
+}
+
+.form-label {
+  color: #e0e0e0;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/* Botones de filtro */
+.btn-outline-secondary {
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--primary-yellow);
+  border-color: var(--primary-yellow);
+  color: #111;
+}
+
+/* Badges para plataformas */
+.badge.bg-primary {
+  background-color: var(--button-blue) !important;
+  padding: 0.5em 0.8em;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-right: 10px;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.platform-badge-logo {
+  height: 20px;
+  width: auto;
+  max-width: 24px;
+  margin-right: 6px;
+  vertical-align: middle;
+  object-fit: contain;
+}
+
+/* Estilos para tablas admin */
+.table {
+  color: #f0f0f0;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table thead th {
+  background-color: #222222;
+  color: var(--primary-yellow);
+  border-bottom: 2px solid var(--primary-yellow);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #333;
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table tbody td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #222222;
+}
+
+.table-hover > tbody > tr:hover {
+  background-color: #333333;
+}
+
+/* Formularios en Admin */
+.form-check-label {
+  color: #f0f0f0 !important;
+}
+
+.form-check-input {
+  background-color: #333;
+  border-color: #555;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary-yellow);
+  border-color: var(--primary-yellow);
+}
+
+.text-muted {
+  color: #aaaaaa !important;
+}
+
+/* Estilo para elementos con cursor pointer */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Estilos para tarjetas en hover */
+.game-card.cursor-pointer:hover,
+.category-card.cursor-pointer:hover,
+.platform-card.cursor-pointer:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Estilos para el Modal de Checkout */
+.checkout-modal .modal-content {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.checkout-modal .modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  padding: 1.2rem 1.5rem;
+}
+
+.checkout-modal .modal-title {
+  color: #000;
+  font-weight: 600;
+}
+
+.checkout-modal .modal-body {
+  padding: 1.5rem;
+  color: #000;
+}
+
+.checkout-modal .form-label {
+  color: #000;
+  font-weight: 500;
+}
+
+.checkout-modal .form-control {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 0.6rem 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.checkout-modal .form-control:focus {
+  border-color: #000;
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+}
+
+.checkout-modal .form-control::placeholder {
+  color: #6c757d;
+}
+
+.checkout-modal .form-check-input {
+  border-color: #000;
+}
+
+.checkout-modal .form-check-label {
+  color: #000000 !important;
+  font-weight: 600 !important;
+  margin-left: 8px;
+  font-size: 1.05rem;
+}
+
+.checkout-modal .order-summary {
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+
+.checkout-modal .order-summary h5 {
+  color: #000;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.checkout-modal .order-summary span {
+  color: #000;
+}
+
+.checkout-modal .modal-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  padding: 1rem 1.5rem;
+}
+
+/* Estilos específicos para los radio buttons del método de pago */
+.checkout-modal .payment-methods .form-check-input[type="radio"] {
+  background-color: #fff;
+  border: 1px solid #000;
+  width: 18px;
+  height: 18px;
+}
+
+.checkout-modal .payment-methods .form-check-input[type="radio"]:checked {
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23000'/%3e%3c/svg%3e");
+  border-color: #000;
+}
+
+.checkout-modal .payment-methods .form-check {
+  margin-bottom: 8px;
+}
+
+/* Quitar flechas incrementales de los inputs number */
+/* Para Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+/* Para Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Estilos específicos para el input de cantidad en el carrito */
+.quantity-control .form-control {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  font-weight: 500;
+  width: 50px;
+}
+
+.quantity-control .btn {
+  background-color: #f8f9fa;
+  color: #000;
+  border: 1px solid #000;
+  font-weight: bold;
+}
+
+.quantity-control .btn:hover {
+  background-color: #e9ecef;
+}
+
+/* Estilo específico para la etiqueta de pago */
+.payment-option-label {
+  color: #000000 !important;
+  font-weight: 600 !important;
+} 
