@@ -16,7 +16,7 @@ import {
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage } from './config';
 
-// Colecciones
+
 const GAMES_COLLECTION = 'games';
 const CATEGORIES_COLLECTION = 'categories';
 const PLATFORMS_COLLECTION = 'platforms';
@@ -24,7 +24,12 @@ const REVIEWS_COLLECTION = 'reviews';
 const USER_PROFILES_COLLECTION = 'userProfiles';
 const ORDERS_COLLECTION = 'orders';
 
-// Funciones para productos/juegos
+
+let categoriesCache = null;
+let categoriesCacheTime = null;
+const CACHE_DURATION = 60000; 
+
+
 
 /**
  * Agrega un nuevo juego a la base de datos
@@ -34,7 +39,7 @@ const ORDERS_COLLECTION = 'orders';
  */
 export const addGame = async (gameData, imageFile) => {
   try {
-    // Primero subimos la imagen a Storage
+    
     let imageUrl = null;
     if (imageFile) {
       const storageRef = ref(storage, `games/${Date.now()}_${imageFile.name}`);
@@ -42,7 +47,7 @@ export const addGame = async (gameData, imageFile) => {
       imageUrl = await getDownloadURL(snapshot.ref);
     }
 
-    // Crear el documento en Firestore
+    
     const docRef = await addDoc(collection(db, GAMES_COLLECTION), {
       ...gameData,
       imageUrl,
@@ -75,9 +80,9 @@ export const getGames = async (options = {}) => {
     let gamesQuery = collection(db, GAMES_COLLECTION);
     const filters = [];
 
-    // Aplicar filtros si se proporcionan
+    
     if (categoryId) {
-      // Usamos array-contains para buscar en el array categoryIds
+      
       filters.push(where('categoryIds', 'array-contains', categoryId));
     }
 
@@ -85,15 +90,15 @@ export const getGames = async (options = {}) => {
       filters.push(where('platformId', '==', platformId));
     }
 
-    // Simplificar la consulta para evitar problemas con índices
+    
     if (filters.length > 0) {
-      // Aplicar solo los filtros primero
+      
       gamesQuery = query(gamesQuery, ...filters);
       
-      // Luego obtenemos todos los documentos
+      
       const querySnapshot = await getDocs(gamesQuery);
       
-      // Convertimos a un array que podemos manipular en memoria
+      
       let games = [];
       querySnapshot.forEach((doc) => {
         games.push({
@@ -102,9 +107,9 @@ export const getGames = async (options = {}) => {
         });
       });
       
-      // Ordenamos en memoria según los criterios
+      
       games.sort((a, b) => {
-        // Manejar casos especiales para campos que pueden no existir
+        
         const valueA = a[sortBy] !== undefined ? a[sortBy] : 0;
         const valueB = b[sortBy] !== undefined ? b[sortBy] : 0;
         
@@ -115,12 +120,12 @@ export const getGames = async (options = {}) => {
         }
       });
       
-      // Aplicamos el límite después de ordenar
+      
       games = games.slice(0, itemLimit);
       
       return games;
     } else {
-      // Si no hay filtros, podemos usar la consulta normal con ordenamiento
+      
       gamesQuery = query(
         gamesQuery,
         orderBy(sortBy, sortDirection),
@@ -188,9 +193,9 @@ export const updateGame = async (gameId, gameData, newImageFile = null) => {
     const currentData = gameDoc.data();
     let imageUrl = currentData.imageUrl;
 
-    // Si hay una nueva imagen, subir y actualizar URL
+    
     if (newImageFile) {
-      // Eliminar imagen anterior si existe
+      
       if (currentData.imageUrl) {
         try {
           const oldImageRef = ref(storage, currentData.imageUrl);
@@ -200,13 +205,13 @@ export const updateGame = async (gameId, gameData, newImageFile = null) => {
         }
       }
 
-      // Subir nueva imagen
+      
       const storageRef = ref(storage, `games/${Date.now()}_${newImageFile.name}`);
       const snapshot = await uploadBytes(storageRef, newImageFile);
       imageUrl = await getDownloadURL(snapshot.ref);
     }
 
-    // Actualizar documento
+    
     await updateDoc(gameRef, {
       ...gameData,
       imageUrl,
@@ -232,7 +237,7 @@ export const deleteGame = async (gameId) => {
       throw new Error('El juego no existe');
     }
 
-    // Eliminar imagen de Storage si existe
+    
     const data = gameDoc.data();
     if (data.imageUrl) {
       try {
@@ -243,7 +248,7 @@ export const deleteGame = async (gameId) => {
       }
     }
 
-    // Eliminar documento
+    
     await deleteDoc(gameRef);
   } catch (error) {
     console.error('Error al eliminar juego:', error);
@@ -251,7 +256,7 @@ export const deleteGame = async (gameId) => {
   }
 };
 
-// Funciones para categorías
+
 
 /**
  * Obtiene todas las categorías
@@ -259,6 +264,14 @@ export const deleteGame = async (gameId) => {
  */
 export const getCategories = async () => {
   try {
+    
+    const now = Date.now();
+    if (categoriesCache && categoriesCacheTime && (now - categoriesCacheTime < CACHE_DURATION)) {
+      console.log('Usando categorías de caché');
+      return categoriesCache;
+    }
+
+    console.log('Cargando categorías desde Firestore');
     const querySnapshot = await getDocs(collection(db, CATEGORIES_COLLECTION));
     const categories = [];
     
@@ -269,7 +282,18 @@ export const getCategories = async () => {
       });
     });
     
-    return categories;
+    
+    const uniqueCategories = categories.filter((category, index, self) => 
+      index === self.findIndex(c => c.slug === category.slug)
+    );
+    
+    console.log(`Categorías totales: ${categories.length}, Categorías únicas: ${uniqueCategories.length}`);
+    
+    
+    categoriesCache = uniqueCategories;
+    categoriesCacheTime = now;
+    
+    return uniqueCategories;
   } catch (error) {
     console.error('Error al obtener categorías:', error);
     throw error;
@@ -294,7 +318,7 @@ export const addCategory = async (categoryData) => {
   }
 };
 
-// Funciones para plataformas
+
 
 /**
  * Obtiene todas las plataformas
@@ -319,7 +343,7 @@ export const getPlatforms = async () => {
   }
 };
 
-// Funciones para reseñas
+
 
 /**
  * Agrega una reseña a un juego
@@ -371,7 +395,7 @@ export const getGameReviews = async (gameId) => {
   }
 };
 
-// Función para obtener accesorios
+
 export const getAccessories = async (options = {}) => {
   try {
     const { 
@@ -385,7 +409,7 @@ export const getAccessories = async (options = {}) => {
     let accessoriesQuery = collection(db, 'accessories');
     const filters = [];
 
-    // Aplicar filtros si se proporcionan
+    
     if (categoryId) {
       filters.push(where('categoryId', '==', categoryId));
     }
@@ -394,7 +418,7 @@ export const getAccessories = async (options = {}) => {
       filters.push(where('platformId', '==', platformId));
     }
 
-    // Crear la consulta con los filtros y ordenamiento
+    
     if (filters.length > 0) {
       accessoriesQuery = query(
         accessoriesQuery, 
@@ -410,10 +434,10 @@ export const getAccessories = async (options = {}) => {
       );
     }
 
-    // Ejecutar la consulta
+    
     const querySnapshot = await getDocs(accessoriesQuery);
     
-    // Convertir los documentos en objetos
+    
     const accessories = [];
     querySnapshot.forEach((doc) => {
       accessories.push({
@@ -437,7 +461,7 @@ export const getAccessories = async (options = {}) => {
  */
 export const addAccessory = async (accessoryData, imageFile) => {
   try {
-    // Primero subimos la imagen a Storage
+    
     let imageUrl = null;
     if (imageFile) {
       const storageRef = ref(storage, `accessories/${Date.now()}_${imageFile.name}`);
@@ -445,7 +469,7 @@ export const addAccessory = async (accessoryData, imageFile) => {
       imageUrl = await getDownloadURL(snapshot.ref);
     }
 
-    // Crear el documento en Firestore
+    
     const docRef = await addDoc(collection(db, 'accessories'), {
       ...accessoryData,
       imageUrl,
@@ -503,9 +527,9 @@ export const updateAccessory = async (accessoryId, accessoryData, newImageFile =
     const currentData = accessoryDoc.data();
     let imageUrl = currentData.imageUrl;
 
-    // Si hay una nueva imagen, subir y actualizar URL
+    
     if (newImageFile) {
-      // Eliminar imagen anterior si existe
+      
       if (currentData.imageUrl) {
         try {
           const oldImageRef = ref(storage, currentData.imageUrl);
@@ -515,13 +539,13 @@ export const updateAccessory = async (accessoryId, accessoryData, newImageFile =
         }
       }
 
-      // Subir nueva imagen
+      
       const storageRef = ref(storage, `accessories/${Date.now()}_${newImageFile.name}`);
       const snapshot = await uploadBytes(storageRef, newImageFile);
       imageUrl = await getDownloadURL(snapshot.ref);
     }
 
-    // Actualizar documento
+    
     await updateDoc(accessoryRef, {
       ...accessoryData,
       imageUrl,
@@ -547,7 +571,7 @@ export const deleteAccessory = async (accessoryId) => {
       throw new Error('El accesorio no existe');
     }
 
-    // Eliminar imagen de Storage si existe
+    
     const data = accessoryDoc.data();
     if (data.imageUrl) {
       try {
@@ -558,7 +582,7 @@ export const deleteAccessory = async (accessoryId) => {
       }
     }
 
-    // Eliminar documento
+    
     await deleteDoc(accessoryRef);
   } catch (error) {
     console.error('Error al eliminar accesorio:', error);
@@ -566,7 +590,7 @@ export const deleteAccessory = async (accessoryId) => {
   }
 };
 
-// Función para obtener tarjetas de regalo
+
 export const getGiftCards = async (options = {}) => {
   try {
     const { 
@@ -579,12 +603,12 @@ export const getGiftCards = async (options = {}) => {
     let giftCardsQuery = collection(db, 'giftCards');
     const filters = [];
 
-    // Aplicar filtros si se proporcionan
+    
     if (platformId) {
       filters.push(where('platformId', '==', platformId));
     }
 
-    // Crear la consulta con los filtros y ordenamiento
+    
     if (filters.length > 0) {
       giftCardsQuery = query(
         giftCardsQuery, 
@@ -600,10 +624,10 @@ export const getGiftCards = async (options = {}) => {
       );
     }
 
-    // Ejecutar la consulta
+    
     const querySnapshot = await getDocs(giftCardsQuery);
     
-    // Convertir los documentos en objetos
+    
     const giftCards = [];
     querySnapshot.forEach((doc) => {
       giftCards.push({
@@ -651,7 +675,7 @@ export const getGiftCardById = async (giftCardId) => {
  */
 export const addGiftCard = async (giftCardData, imageFile) => {
   try {
-    // Primero subimos la imagen a Storage
+    
     let imageUrl = null;
     if (imageFile) {
       const storageRef = ref(storage, `giftCards/${Date.now()}_${imageFile.name}`);
@@ -659,7 +683,7 @@ export const addGiftCard = async (giftCardData, imageFile) => {
       imageUrl = await getDownloadURL(snapshot.ref);
     }
 
-    // Crear el documento en Firestore
+    
     const docRef = await addDoc(collection(db, 'giftCards'), {
       ...giftCardData,
       imageUrl,
@@ -693,9 +717,9 @@ export const updateGiftCard = async (giftCardId, giftCardData, newImageFile = nu
     const currentData = giftCardDoc.data();
     let imageUrl = currentData.imageUrl;
 
-    // Si hay una nueva imagen, subir y actualizar URL
+    
     if (newImageFile) {
-      // Eliminar imagen anterior si existe
+      
       if (currentData.imageUrl) {
         try {
           const oldImageRef = ref(storage, currentData.imageUrl);
@@ -705,13 +729,13 @@ export const updateGiftCard = async (giftCardId, giftCardData, newImageFile = nu
         }
       }
 
-      // Subir nueva imagen
+      
       const storageRef = ref(storage, `giftCards/${Date.now()}_${newImageFile.name}`);
       const snapshot = await uploadBytes(storageRef, newImageFile);
       imageUrl = await getDownloadURL(snapshot.ref);
     }
 
-    // Actualizar documento
+    
     await updateDoc(giftCardRef, {
       ...giftCardData,
       imageUrl,
@@ -737,7 +761,7 @@ export const deleteGiftCard = async (giftCardId) => {
       throw new Error('La tarjeta de regalo no existe');
     }
 
-    // Eliminar imagen de Storage si existe
+    
     const data = giftCardDoc.data();
     if (data.imageUrl) {
       try {
@@ -748,7 +772,7 @@ export const deleteGiftCard = async (giftCardId) => {
       }
     }
 
-    // Eliminar documento
+    
     await deleteDoc(giftCardRef);
   } catch (error) {
     console.error('Error al eliminar tarjeta de regalo:', error);
@@ -784,10 +808,10 @@ export const getAllGames = async () => {
   }
 };
 
-// Función de búsqueda global
+
 export const searchProducts = async (query) => {
   try {
-    // Búsqueda de juegos
+    
     const gamesQuery = collection(db, 'games');
     const gamesSnapshot = await getDocs(gamesQuery);
     const allGames = gamesSnapshot.docs.map(doc => ({
@@ -795,7 +819,7 @@ export const searchProducts = async (query) => {
       ...doc.data()
     }));
     
-    // Búsqueda de accesorios
+    
     const accessoriesQuery = collection(db, 'accessories');
     const accessoriesSnapshot = await getDocs(accessoriesQuery);
     const allAccessories = accessoriesSnapshot.docs.map(doc => ({
@@ -803,7 +827,7 @@ export const searchProducts = async (query) => {
       ...doc.data()
     }));
     
-    // Búsqueda de tarjetas de regalo
+    
     const giftCardsQuery = collection(db, 'giftCards');
     const giftCardsSnapshot = await getDocs(giftCardsQuery);
     const allGiftCards = giftCardsSnapshot.docs.map(doc => ({
@@ -811,7 +835,7 @@ export const searchProducts = async (query) => {
       ...doc.data()
     }));
     
-    // Obtener plataformas para mostrar nombres en lugar de IDs
+    
     const platformsQuery = collection(db, 'platforms');
     const platformsSnapshot = await getDocs(platformsQuery);
     const platforms = platformsSnapshot.docs.map(doc => ({
@@ -819,36 +843,36 @@ export const searchProducts = async (query) => {
       ...doc.data()
     }));
     
-    // Normalizar la consulta
+    
     const normalizedQuery = query.toLowerCase().trim();
     
-    // Filtrar juegos
+    
     const games = allGames.filter(game => {
       const titleMatch = game.title.toLowerCase().includes(normalizedQuery);
       const descriptionMatch = game.description?.toLowerCase().includes(normalizedQuery);
       
-      // Añadir nombre de plataforma
+      
       const platform = platforms.find(p => p.id === game.platformId);
       game.platformName = platform ? platform.name : 'Desconocido';
       
       return titleMatch || descriptionMatch;
     });
     
-    // Filtrar accesorios
+    
     const accessories = allAccessories.filter(accessory => {
       const nameMatch = accessory.name.toLowerCase().includes(normalizedQuery);
       const descriptionMatch = accessory.description?.toLowerCase().includes(normalizedQuery);
       
-      // Añadir nombre de plataforma
+      
       const platform = platforms.find(p => p.id === accessory.platformId);
       accessory.platformName = platform ? platform.name : 'Universal';
       
       return nameMatch || descriptionMatch;
     });
     
-    // Filtrar tarjetas de regalo
+    
     const giftCards = allGiftCards.filter(giftCard => {
-      // Añadir nombre de plataforma
+      
       const platform = platforms.find(p => p.id === giftCard.platformId);
       giftCard.platformName = platform ? platform.name : 'Desconocido';
       
@@ -868,7 +892,7 @@ export const searchProducts = async (query) => {
   }
 };
 
-// Funciones para perfiles de usuario
+
 
 /**
  * Obtiene el perfil de un usuario por su ID
@@ -886,7 +910,7 @@ export const getUserProfile = async (userId) => {
         ...docSnap.data()
       };
     } else {
-      // Si no existe, devolvemos un objeto vacío
+      
       return {
         id: userId,
         name: '',
@@ -914,7 +938,7 @@ export const updateUserProfile = async (userId, profileData) => {
   try {
     const userRef = doc(db, USER_PROFILES_COLLECTION, userId);
     
-    // Usamos setDoc con merge:true para crear o actualizar el documento
+    
     await setDoc(userRef, {
       ...profileData,
       updatedAt: serverTimestamp()
@@ -937,7 +961,7 @@ export const addShippingAddress = async (userId, addressData) => {
     const userRef = doc(db, USER_PROFILES_COLLECTION, userId);
     const userDoc = await getDoc(userRef);
     
-    // Generar un ID único para la dirección
+    
     const addressId = Date.now().toString();
     const newAddress = {
       id: addressId,
@@ -946,7 +970,7 @@ export const addShippingAddress = async (userId, addressData) => {
     };
     
     if (userDoc.exists()) {
-      // El usuario ya tiene un perfil, añadimos a su lista de direcciones
+      
       const userData = userDoc.data();
       const addresses = userData.shippingAddresses || [];
       
@@ -955,7 +979,7 @@ export const addShippingAddress = async (userId, addressData) => {
         updatedAt: serverTimestamp()
       });
     } else {
-      // Crear nuevo perfil de usuario con esta dirección
+      
       await setDoc(userRef, {
         shippingAddresses: [newAddress],
         createdAt: serverTimestamp(),
@@ -999,7 +1023,7 @@ export const deleteShippingAddress = async (userId, addressId) => {
   }
 };
 
-// Funciones para pedidos
+
 
 /**
  * Crea un nuevo pedido
@@ -1009,29 +1033,29 @@ export const deleteShippingAddress = async (userId, addressId) => {
  */
 export const createOrder = async (userId, orderData) => {
   try {
-    // Añadir datos adicionales al pedido
+    
     const enhancedOrderData = {
       ...orderData,
       userId,
-      status: 'pending', // inicial: pendiente
+      status: 'pending', 
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     };
     
-    // Crear el documento en Firestore
+    
     const docRef = await addDoc(collection(db, ORDERS_COLLECTION), enhancedOrderData);
     
-    // Actualizar el perfil del usuario con los datos de envío si es necesario
+    
     if (orderData.saveAddress && orderData.shippingAddress) {
       const userRef = doc(db, USER_PROFILES_COLLECTION, userId);
       const userDoc = await getDoc(userRef);
       
       if (userDoc.exists()) {
-        // Verificar si la dirección ya existe
+        
         const userData = userDoc.data();
         const addresses = userData.shippingAddresses || [];
         
-        // Comprobar si ya existe una dirección similar
+        
         const addressExists = addresses.some(addr => 
           addr.address === orderData.shippingAddress.address &&
           addr.city === orderData.shippingAddress.city &&
@@ -1039,7 +1063,7 @@ export const createOrder = async (userId, orderData) => {
         );
         
         if (!addressExists) {
-          // Si no existe, añadirla
+          
           const addressId = Date.now().toString();
           const newAddress = {
             id: addressId,
@@ -1053,7 +1077,7 @@ export const createOrder = async (userId, orderData) => {
           });
         }
       } else {
-        // Crear nuevo perfil de usuario con esta dirección
+        
         const addressId = Date.now().toString();
         const newAddress = {
           id: addressId,

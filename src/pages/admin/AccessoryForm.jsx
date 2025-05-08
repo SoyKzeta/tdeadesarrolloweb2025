@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Form, Button, Container, Row, Col, Card, Alert, Spinner } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Card, Alert, Spinner, InputGroup } from 'react-bootstrap';
 import { getPlatforms, getCategories, getAccessoryById, updateAccessory, addAccessory } from '../../firebase/firestore';
 
 const AccessoryForm = () => {
@@ -16,7 +16,7 @@ const AccessoryForm = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
   
-  // Estado del formulario
+  
   const [formValues, setFormValues] = useState({
     title: '',
     slug: '',
@@ -35,13 +35,13 @@ const AccessoryForm = () => {
     is_new: false
   });
 
-  // Cargar datos iniciales
+  
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
         
-        // Cargar plataformas y categorías
+        
         const [platformsData, categoriesData] = await Promise.all([
           getPlatforms(),
           getCategories()
@@ -49,7 +49,7 @@ const AccessoryForm = () => {
         
         setPlatforms(platformsData);
         
-        // Filtrar categorías relacionadas con accesorios
+        
         const accessoryCategories = categoriesData.filter(cat => 
           cat.slug.includes('accesorio') || 
           cat.slug.includes('perifericos') ||
@@ -59,12 +59,12 @@ const AccessoryForm = () => {
         
         setCategories(accessoryCategories.length > 0 ? accessoryCategories : categoriesData);
         
-        // Cargar datos del accesorio para edición
+        
         if (isEditMode && id) {
           try {
             const accessoryData = await getAccessoryById(id);
             
-            // Formatear los datos para el formulario
+            
             setFormValues({
               title: accessoryData.title || '',
               slug: accessoryData.slug || '',
@@ -83,7 +83,7 @@ const AccessoryForm = () => {
               is_new: accessoryData.is_new || false
             });
             
-            // Si hay una imagen existente, mostrarla
+            
             if (accessoryData.imageUrl) {
               setImagePreview(accessoryData.imageUrl);
             }
@@ -104,7 +104,7 @@ const AccessoryForm = () => {
     loadData();
   }, [id, isEditMode]);
 
-  // Generar slug automáticamente a partir del título
+  
   const generateSlug = (title) => {
     return title
       .toLowerCase()
@@ -120,11 +120,11 @@ const AccessoryForm = () => {
       .trim();
   };
 
-  // Manejar cambios en inputs del formulario
+  
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     
-    // Si es el título, generar el slug automáticamente
+    
     if (name === 'title') {
       setFormValues({
         ...formValues,
@@ -139,7 +139,7 @@ const AccessoryForm = () => {
     }
   };
 
-  // Manejar cambios en selección múltiple
+  
   const handleMultiSelectChange = (e) => {
     const { name, options } = e.target;
     const selectedValues = [];
@@ -156,13 +156,13 @@ const AccessoryForm = () => {
     });
   };
 
-  // Manejar subida de imagen
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
       
-      // Crear URL para previsualización
+      
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result);
@@ -171,7 +171,7 @@ const AccessoryForm = () => {
     }
   };
 
-  // Manejar envío del formulario
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -180,30 +180,30 @@ const AccessoryForm = () => {
       setError('');
       setSuccess('');
       
-      // Validación básica
+      
       if (!formValues.title || !formValues.description || !formValues.price) {
         setError('Por favor, completa todos los campos obligatorios');
         setSaving(false);
         return;
       }
       
-      // Guardar el accesorio en Firestore
+      
       if (isEditMode && id) {
-        // Actualizar accesorio existente
+        
         await updateAccessory(id, formValues, imageFile);
         setSuccess('Accesorio actualizado con éxito');
       } else {
-        // Agregar nuevo accesorio
+        
         await addAccessory(formValues, imageFile);
         setSuccess('Accesorio agregado con éxito');
       }
       
-      // Redirigir al panel de administración después de un breve retraso
+      
       setTimeout(() => {
         navigate('/admin');
       }, 1500);
       
-      // Limpiar formulario si es necesario
+      
       if (!isEditMode) {
         setFormValues({
           title: '',
@@ -234,7 +234,7 @@ const AccessoryForm = () => {
     }
   };
 
-  // Volver a la página anterior
+  
   const handleCancel = () => {
     navigate('/admin');
   };
@@ -301,16 +301,23 @@ const AccessoryForm = () => {
                     <Row>
                       <Col md={6}>
                         <Form.Group className="mb-3">
-                          <Form.Label>Precio*</Form.Label>
-                          <Form.Control 
-                            type="number" 
-                            step="0.01" 
-                            min="0" 
-                            name="price" 
-                            value={formValues.price} 
-                            onChange={handleChange}
-                            required 
-                          />
+                          <Form.Label>Precio (COP)*</Form.Label>
+                          <InputGroup>
+                            <InputGroup.Text>COL$</InputGroup.Text>
+                            <Form.Control 
+                              type="number" 
+                              step="0.01" 
+                              min="0" 
+                              name="price" 
+                              value={formValues.price} 
+                              onChange={handleChange}
+                              required 
+                              placeholder="0.00"
+                            />
+                          </InputGroup>
+                          <Form.Text className="text-muted">
+                            Ingrese el precio en Pesos Colombianos (COP)
+                          </Form.Text>
                         </Form.Group>
                       </Col>
                       <Col md={6}>

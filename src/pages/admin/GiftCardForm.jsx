@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Form, Button, Container, Row, Col, Card, Alert, Spinner } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Card, Alert, Spinner, InputGroup } from 'react-bootstrap';
 import { getPlatforms, getGiftCardById, addGiftCard, updateGiftCard } from '../../firebase/firestore';
 
 const GiftCardForm = () => {
@@ -15,7 +15,7 @@ const GiftCardForm = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
   
-  // Estado del formulario
+  
   const [formValues, setFormValues] = useState({
     name: '',
     slug: '',
@@ -30,17 +30,17 @@ const GiftCardForm = () => {
     is_new: false
   });
 
-  // Cargar datos iniciales
+  
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
         
-        // Cargar plataformas
+        
         const platformsData = await getPlatforms();
         setPlatforms(platformsData);
         
-        // Cargar datos de la tarjeta de regalo para edición
+        
         if (isEditMode) {
           try {
             const giftCardData = await getGiftCardById(id);
@@ -78,7 +78,7 @@ const GiftCardForm = () => {
     loadData();
   }, [id, isEditMode]);
 
-  // Generar slug automáticamente a partir del nombre
+  
   const generateSlug = (name) => {
     return name
       .toLowerCase()
@@ -94,11 +94,11 @@ const GiftCardForm = () => {
       .trim();
   };
 
-  // Manejar cambios en inputs del formulario
+  
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     
-    // Si es el nombre, generar el slug automáticamente
+    
     if (name === 'name') {
       setFormValues({
         ...formValues,
@@ -113,13 +113,13 @@ const GiftCardForm = () => {
     }
   };
 
-  // Manejar subida de imagen
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
       
-      // Crear URL para previsualización
+      
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result);
@@ -128,7 +128,7 @@ const GiftCardForm = () => {
     }
   };
 
-  // Manejar envío del formulario
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -137,14 +137,14 @@ const GiftCardForm = () => {
       setError('');
       setSuccess('');
       
-      // Validación básica
+      
       if (!formValues.name || !formValues.description || !formValues.price || !formValues.value || !formValues.platformId) {
         setError('Por favor, completa todos los campos obligatorios');
         setSaving(false);
         return;
       }
       
-      // Crear objeto con datos para enviar a Firestore
+      
       const giftCardData = {
         name: formValues.name,
         slug: formValues.slug,
@@ -166,7 +166,7 @@ const GiftCardForm = () => {
         await addGiftCard(giftCardData, imageFile);
         setSuccess('Tarjeta de regalo agregada con éxito');
         
-        // Limpiar formulario
+        
         setFormValues({
           name: '',
           slug: '',
@@ -186,7 +186,7 @@ const GiftCardForm = () => {
       
       setSaving(false);
       
-      // Opcional: redirigir a la lista después de guardar
+      
       setTimeout(() => {
         navigate('/admin');
       }, 1500);
@@ -198,7 +198,7 @@ const GiftCardForm = () => {
     }
   };
 
-  // Volver a la página anterior
+  
   const handleCancel = () => {
     navigate('/admin');
   };
@@ -267,30 +267,44 @@ const GiftCardForm = () => {
                     <Row>
                       <Col md={6}>
                         <Form.Group className="mb-3">
-                          <Form.Label>Precio de Venta*</Form.Label>
-                          <Form.Control 
-                            type="number" 
-                            step="0.01" 
-                            min="0" 
-                            name="price" 
-                            value={formValues.price} 
-                            onChange={handleChange}
-                            required 
-                          />
+                          <Form.Label>Precio de Venta (COP)*</Form.Label>
+                          <InputGroup>
+                            <InputGroup.Text>COL$</InputGroup.Text>
+                            <Form.Control 
+                              type="number" 
+                              step="0.01" 
+                              min="0" 
+                              name="price" 
+                              value={formValues.price} 
+                              onChange={handleChange}
+                              required 
+                              placeholder="0.00"
+                            />
+                          </InputGroup>
+                          <Form.Text className="text-muted">
+                            Ingrese el precio en Pesos Colombianos (COP)
+                          </Form.Text>
                         </Form.Group>
                       </Col>
                       <Col md={6}>
                         <Form.Group className="mb-3">
-                          <Form.Label>Valor de la Tarjeta*</Form.Label>
-                          <Form.Control 
-                            type="number" 
-                            step="0.01" 
-                            min="0" 
-                            name="value" 
-                            value={formValues.value} 
-                            onChange={handleChange}
-                            required 
-                          />
+                          <Form.Label>Valor de la Tarjeta (COP)*</Form.Label>
+                          <InputGroup>
+                            <InputGroup.Text>COL$</InputGroup.Text>
+                            <Form.Control 
+                              type="number" 
+                              step="0.01" 
+                              min="0" 
+                              name="value" 
+                              value={formValues.value} 
+                              onChange={handleChange}
+                              required 
+                              placeholder="0.00"
+                            />
+                          </InputGroup>
+                          <Form.Text className="text-muted">
+                            Ingrese el valor en Pesos Colombianos (COP)
+                          </Form.Text>
                         </Form.Group>
                       </Col>
                     </Row>

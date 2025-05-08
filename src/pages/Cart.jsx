@@ -16,7 +16,7 @@ const Cart = () => {
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [checkoutComplete, setCheckoutComplete] = useState(false);
   
-  // Estados para el formulario de envío
+  
   const [shippingData, setShippingData] = useState({
     name: '',
     email: '',
@@ -27,7 +27,7 @@ const Cart = () => {
     phone: ''
   });
 
-  // Manejar cambios en el formulario
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setShippingData(prev => ({
@@ -36,50 +36,50 @@ const Cart = () => {
     }));
   };
 
-  // Validar formulario de envío
+  
   const validateForm = () => {
     const { name, email, address, city, state, zipCode, phone } = shippingData;
     return name && email && address && city && state && zipCode && phone;
   };
 
-  // Iniciar proceso de checkout
+  
   const handleCheckout = () => {
     logBeginCheckout(cart, cartTotal);
     
-    // Verificar si el usuario está autenticado
+    
     if (!currentUser) {
       setShowLoginModal(true);
     } else {
-      // Si el usuario está autenticado, mostrar formulario de checkout
+      
       setShowCheckoutModal(true);
     }
   };
 
-  // Continuar al checkout después de iniciar sesión
+  
   const continueToCheckout = () => {
     setShowLoginModal(false);
     setShowCheckoutModal(true);
   };
 
-  // Procesar el pago (simulado)
+  
   const processPayment = async () => {
     try {
-      // Crear objeto con los datos del pedido
+      
       const orderData = {
         items: cart,
         shippingAddress: shippingData,
-        saveAddress: true, // Guardar la dirección en el perfil
+        saveAddress: true, 
         total: cartTotal,
         paymentMethod: 'creditCard',
         notes: '',
       };
       
-      // Guardar el pedido en la base de datos
+      
       if (currentUser) {
         await createOrder(currentUser.uid, orderData);
       }
       
-      // Mostrar confirmación y limpiar carrito
+      
       setTimeout(() => {
         setCheckoutComplete(true);
         clearCart();
@@ -90,7 +90,7 @@ const Cart = () => {
     }
   };
 
-  // Volver a la tienda después de la compra
+  
   const returnToShop = () => {
     setCheckoutComplete(false);
     setShowCheckoutModal(false);
@@ -219,7 +219,7 @@ const Cart = () => {
         </>
       )}
 
-      {/* Modal para iniciar sesión */}
+      
       <Modal
         show={showLoginModal}
         onHide={() => setShowLoginModal(false)}
@@ -245,7 +245,7 @@ const Cart = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Modal para el checkout */}
+      
       <Modal
         show={showCheckoutModal}
         onHide={() => setShowCheckoutModal(false)}

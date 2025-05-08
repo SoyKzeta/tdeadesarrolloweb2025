@@ -18,13 +18,13 @@ const Accessories = () => {
   const { formatPrice } = useCurrency();
   const { addToCart } = useCart();
 
-  // Filtros
+  
   const [selectedType, setSelectedType] = useState(searchParams.get('type') || '');
   const [selectedPlatform, setSelectedPlatform] = useState(searchParams.get('platform') || '');
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'createdAt');
   const [priceRange, setPriceRange] = useState(searchParams.get('price') || '');
 
-  // Tipos de accesorios 
+  
   const accessoryTypes = [
     { id: 'controllers', name: 'Controles' },
     { id: 'headsets', name: 'Auriculares/Diademas' },
@@ -38,7 +38,7 @@ const Accessories = () => {
   useEffect(() => {
     const loadFilters = async () => {
       try {
-        // Cargar plataformas
+        
         const platformsData = await getPlatforms();
         setPlatforms(platformsData);
       } catch (err) {
@@ -55,27 +55,27 @@ const Accessories = () => {
       setLoading(true);
       
       try {
-        // Preparar opciones de filtrado
+        
         const options = {
           sortBy: sortBy || 'createdAt',
           sortDirection: sortBy === 'price' ? 'asc' : 'desc',
           itemLimit: 100
         };
         
-        // Aplicar filtro de plataforma si está seleccionado
+        
         if (selectedPlatform) {
           options.platformId = selectedPlatform;
         }
         
-        // Obtener accesorios
+        
         let accessoriesData = await getAccessories(options);
         
-        // Aplicar filtro de tipo si está seleccionado
+        
         if (selectedType) {
           accessoriesData = accessoriesData.filter(accessory => accessory.type === selectedType);
         }
         
-        // Aplicar filtro de precio si está seleccionado
+        
         if (priceRange) {
           const [min, max] = priceRange.split('-').map(Number);
           accessoriesData = accessoriesData.filter(accessory => {
@@ -100,7 +100,7 @@ const Accessories = () => {
     loadAccessories();
   }, [selectedType, selectedPlatform, sortBy, priceRange]);
 
-  // Función para actualizar filtros y búsqueda
+  
   const updateFilters = (key, value) => {
     const params = new URLSearchParams(searchParams);
     
@@ -112,7 +112,7 @@ const Accessories = () => {
     
     setSearchParams(params);
     
-    // Actualizar estado local
+    
     switch (key) {
       case 'type':
         setSelectedType(value);
@@ -131,7 +131,7 @@ const Accessories = () => {
     }
   };
 
-  // Función para formatear precio con descuento
+  
   const formatPriceWithDiscount = (price, discount) => {
     if (discount && discount > 0) {
       const discountedPrice = price - (price * (discount / 100));
@@ -145,25 +145,25 @@ const Accessories = () => {
     return <span className="text-success fw-bold">{formatPrice(price)}</span>;
   };
 
-  // Función para obtener el nombre del tipo de accesorio
+  
   const getTypeName = (typeId) => {
     const type = accessoryTypes.find(t => t.id === typeId);
     return type ? type.name : 'Accesorio';
   };
 
-  // Función para mostrar el modal con detalles del accesorio
+  
   const showAccessoryDetails = (accessory) => {
     setSelectedAccessory(accessory);
     setShowModal(true);
   };
 
-  // Función para agregar directamente al carrito
+  
   const handleAddToCart = (accessory, event) => {
-    event.stopPropagation(); // Evitar que el clic se propague
+    event.stopPropagation(); 
     addToCart(accessory);
   };
 
-  // Componente de tarjeta de accesorio
+  
   const AccessoryCard = ({ accessory }) => {
     const platformName = platforms.find(p => p.id === accessory.platformId)?.name || 'Universal';
     const typeName = getTypeName(accessory.type);
@@ -227,7 +227,7 @@ const Accessories = () => {
       </p>
       
       <Row>
-        {/* Sidebar de filtros */}
+        
         <Col lg={3} className="mb-4">
           <Card>
             <Card.Header>
@@ -310,7 +310,7 @@ const Accessories = () => {
           </Card>
         </Col>
         
-        {/* Lista de accesorios */}
+        
         <Col lg={9}>
           {loading ? (
             <div className="text-center py-5">
@@ -348,7 +348,7 @@ const Accessories = () => {
         </Col>
       </Row>
       
-      {/* Modal para detalles del accesorio */}
+      
       <GameModal 
         show={showModal} 
         onHide={() => setShowModal(false)} 

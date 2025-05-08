@@ -4,14 +4,14 @@ import { Link, useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { getGames, getCategories, getPlatforms } from '../firebase/firestore';
 import { useCurrency } from '../contexts/useCurrency.js';
 
-// Importar logos de plataformas
+
 import PlaystationLogo from '../assets/logos/ps4_logo.png';
 import PlaystationLogo5 from '../assets/logos/ps5_logo.png';
 import XboxLogo from '../assets/logos/xbox_logo.png';
 import NintendoLogo from '../assets/logos/switch_logo.png';
 import PCLogo from '../assets/logos/pc_gaming.png';
 
-// Mapeo de plataformas a sus logos
+
 const platformLogos = {
   'playstation': PlaystationLogo,
   'playstation-4': PlaystationLogo,
@@ -28,16 +28,16 @@ const platformLogos = {
   'pc-gaming': PCLogo
 };
 
-// Función para obtener el logo de la plataforma según su slug
+
 const getPlatformLogoBySlug = (slug) => {
   if (!slug) return null;
   
-  // Si el slug es exactamente "playstation-5" o "ps5", usar directamente el logo de PS5
+  
   if (slug === "playstation-5" || slug === "ps5") {
     return PlaystationLogo5;
   }
   
-  // Para otros casos, buscar coincidencias parciales en las claves
+  
   const matchingKey = Object.keys(platformLogos).find(key => 
     slug.toLowerCase().includes(key.toLowerCase())
   );
@@ -56,7 +56,7 @@ const PlatformGames = () => {
   const [error, setError] = useState('');
   const { formatPrice } = useCurrency();
   
-  // Filtros
+  
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'rating');
   const [priceRange, setPriceRange] = useState(searchParams.get('price') || '');
@@ -64,8 +64,9 @@ const PlatformGames = () => {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        // Cargar categorías
+        
         const categoriesData = await getCategories();
+        console.log('PlatformGames: Categorías cargadas', categoriesData.length);
         setCategories(categoriesData);
       } catch (err) {
         console.error('Error al cargar categorías:', err);
@@ -80,10 +81,10 @@ const PlatformGames = () => {
       try {
         setLoading(true);
         
-        // Obtener todas las plataformas
+        
         const platforms = await getPlatforms();
         
-        // Encontrar la plataforma actual por su slug
+        
         const currentPlatform = platforms.find(p => p.slug === slug);
         
         if (!currentPlatform) {
@@ -93,21 +94,21 @@ const PlatformGames = () => {
         
         setPlatform(currentPlatform);
         
-        // Obtener juegos para esta plataforma
+        
         const options = {
           platformId: currentPlatform.id,
           sortBy: sortBy || 'rating',
           sortDirection: sortBy === 'price' ? 'asc' : 'desc'
         };
         
-        // Aplicar filtro de categoría si está seleccionado
+        
         if (selectedCategory) {
           options.categoryId = selectedCategory;
         }
         
         let gamesData = await getGames(options);
         
-        // Aplicar filtro de precio si está seleccionado
+        
         if (priceRange) {
           const [min, max] = priceRange.split('-').map(Number);
           gamesData = gamesData.filter(game => {
@@ -132,7 +133,7 @@ const PlatformGames = () => {
     loadPlatformAndGames();
   }, [slug, selectedCategory, sortBy, priceRange]);
 
-  // Función para actualizar filtros
+  
   const updateFilters = (key, value) => {
     const params = new URLSearchParams(searchParams);
     
@@ -144,7 +145,7 @@ const PlatformGames = () => {
     
     setSearchParams(params);
     
-    // Actualizar estado local
+    
     switch (key) {
       case 'category':
         setSelectedCategory(value);
@@ -160,7 +161,7 @@ const PlatformGames = () => {
     }
   };
 
-  // Componente de tarjeta de juego
+  
   const GameCard = ({ game }) => {
     const getCategoryName = (categoryId) => {
       const category = categories.find(c => c.id === categoryId);
@@ -215,7 +216,7 @@ const PlatformGames = () => {
     );
   };
 
-  // Mostrar spinner mientras carga
+  
   if (loading) {
     return (
       <Container className="text-center py-5">
@@ -227,7 +228,7 @@ const PlatformGames = () => {
     );
   }
 
-  // Mostrar error si ocurre
+  
   if (error) {
     return (
       <Container className="text-center py-5">
@@ -265,7 +266,7 @@ const PlatformGames = () => {
       </div>
       
       <Row>
-        {/* Sidebar de filtros */}
+        
         <Col lg={3} className="mb-4">
           <Card>
             <Card.Header>
@@ -280,7 +281,11 @@ const PlatformGames = () => {
                     onChange={(e) => updateFilters('category', e.target.value)}
                   >
                     <option value="">Todas las categorías</option>
-                    {categories.map(category => (
+                    {categories
+                      .filter((category, index, self) => 
+                        index === self.findIndex(c => c.slug === category.slug)
+                      )
+                      .map(category => (
                       <option key={category.id} value={category.id}>
                         {category.name}
                       </option>
@@ -333,7 +338,7 @@ const PlatformGames = () => {
           </Card>
         </Col>
         
-        {/* Lista de juegos */}
+        
         <Col lg={9}>
           {games.length === 0 ? (
             <div className="text-center py-5">

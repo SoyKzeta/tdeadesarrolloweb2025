@@ -5,7 +5,7 @@ import { getAllGames, getPlatforms } from '../firebase/firestore';
 import { useCurrency } from '../contexts/useCurrency.js';
 import { useCart } from '../contexts/useCart.js';
 import GameModal from '../components/GameModal';
-import '../styles/deals.css'; // Asegúrate de crear este archivo CSS
+import '../styles/deals.css'; 
 
 const Deals = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,14 +19,14 @@ const Deals = () => {
   const { formatPrice } = useCurrency();
   const { addToCart } = useCart();
 
-  // Filtros
+  
   const [selectedPlatform, setSelectedPlatform] = useState(searchParams.get('platform') || '');
   const [discountRange, setDiscountRange] = useState(searchParams.get('discount') || '');
   const [priceRange, setPriceRange] = useState(searchParams.get('price') || '');
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'discount');
 
   useEffect(() => {
-    // Cargar plataformas para los filtros y las tarjetas
+    
     const loadPlatforms = async () => {
       try {
         const platformsData = await getPlatforms();
@@ -50,18 +50,18 @@ const Deals = () => {
           itemLimit: 100
         };
         
-        // Aplicar filtro de plataforma si está seleccionado
+        
         if (selectedPlatform) {
           options.platformId = selectedPlatform;
         }
         
-        // Obtener juegos
+        
         let gamesData = await getAllGames(options);
         
-        // Filtrar solo juegos con descuento
+        
         gamesData = gamesData.filter(game => game.discount > 0);
         
-        // Aplicar filtro de rango de descuento si está seleccionado
+        
         if (discountRange) {
           const [minDiscount, maxDiscount] = discountRange.split('-').map(Number);
           gamesData = gamesData.filter(game => {
@@ -72,7 +72,7 @@ const Deals = () => {
           });
         }
         
-        // Aplicar filtro de precio si está seleccionado
+        
         if (priceRange) {
           const [minPrice, maxPrice] = priceRange.split('-').map(Number);
           gamesData = gamesData.filter(game => {
@@ -98,7 +98,7 @@ const Deals = () => {
     loadGamesWithDiscounts();
   }, [selectedPlatform, discountRange, priceRange, sortBy]);
 
-  // Función para actualizar filtros y búsqueda
+  
   const updateFilters = (key, value) => {
     const params = new URLSearchParams(searchParams);
     
@@ -110,7 +110,7 @@ const Deals = () => {
     
     setSearchParams(params);
     
-    // Actualizar estado local
+    
     switch (key) {
       case 'platform':
         setSelectedPlatform(value);
@@ -129,23 +129,23 @@ const Deals = () => {
     }
   };
 
-  // Función para mostrar el modal con detalles del juego
+  
   const showGameDetails = (game) => {
     setSelectedGame(game);
     setShowModal(true);
   };
 
-  // Función para agregar directamente al carrito
+  
   const handleAddToCart = (game, event) => {
-    event.stopPropagation(); // Evitar que el clic se propague
+    event.stopPropagation(); 
     addToCart(game);
   };
 
-  // Componente de tarjeta de juego
+  
   const GameCard = ({ game }) => {
     const platformName = platforms.find(p => p.id === game.platformId)?.name || 'Desconocido';
     
-    // Calcular precio con descuento
+    
     const originalPrice = game.price;
     const discountedPrice = originalPrice - (originalPrice * (game.discount / 100));
     
@@ -215,7 +215,7 @@ const Deals = () => {
       </Row>
       
       <Row>
-        {/* Sidebar de filtros */}
+        
         <Col lg={3} className="mb-4">
           <Card>
             <Card.Header>
@@ -295,7 +295,7 @@ const Deals = () => {
           </Card>
         </Col>
         
-        {/* Lista de juegos en oferta */}
+        
         <Col lg={9}>
           {loading ? (
             <div className="text-center my-5">
@@ -320,7 +320,7 @@ const Deals = () => {
         </Col>
       </Row>
       
-      {/* Modal para detalles del juego */}
+      
       <GameModal 
         show={showModal} 
         onHide={() => setShowModal(false)} 

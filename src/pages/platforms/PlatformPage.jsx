@@ -21,11 +21,11 @@ const PlatformPage = ({ platformSlug, title, description }) => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   
-  // Usar contextos
+  
   const { formatPrice } = useCurrency();
   const { addToCart } = useCart();
   
-  // Filtros
+  
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'createdAt');
   const [priceRange, setPriceRange] = useState(searchParams.get('price') || '');
@@ -33,7 +33,7 @@ const PlatformPage = ({ platformSlug, title, description }) => {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        // Cargar categorías
+        
         const categoriesData = await getCategories();
         setCategories(categoriesData);
       } catch (err) {
@@ -52,14 +52,14 @@ const PlatformPage = ({ platformSlug, title, description }) => {
       try {
         console.log(`Buscando plataforma con slug: ${platformSlug}`);
         
-        // Obtener todas las plataformas
+        
         const platformsData = await getPlatforms();
         console.log('Plataformas obtenidas:', platformsData);
         
-        // Encontrar la plataforma correspondiente al slug
+        
         const platformData = platformsData.find(p => p.slug === platformSlug);
         
-        // Debug: guardar información detallada sobre las plataformas
+        
         setDebugInfo({
           totalPlatforms: platformsData.length,
           platforms: platformsData.map(p => ({ 
@@ -86,14 +86,14 @@ const PlatformPage = ({ platformSlug, title, description }) => {
         setPlatform(platformData);
         console.log(`Plataforma encontrada: ${platformData.name} (ID: ${platformData.id})`);
         
-        // Obtener juegos para esta plataforma
+        
         const options = {
           platformId: platformData.id,
           sortBy: sortBy || 'createdAt',
           sortDirection: sortBy === 'price' ? 'asc' : 'desc'
         };
         
-        // Aplicar filtro de categoría si está seleccionado
+        
         if (selectedCategory) {
           options.categoryId = selectedCategory;
         }
@@ -102,7 +102,7 @@ const PlatformPage = ({ platformSlug, title, description }) => {
         let gamesData = await getGames(options);
         console.log(`Se encontraron ${gamesData.length} juegos para la plataforma ${platformData.name}`);
         
-        // Aplicar filtro de precio si está seleccionado
+        
         if (priceRange) {
           const [min, max] = priceRange.split('-').map(Number);
           gamesData = gamesData.filter(game => {
@@ -127,7 +127,7 @@ const PlatformPage = ({ platformSlug, title, description }) => {
     loadPlatformAndGames();
   }, [platformSlug, selectedCategory, sortBy, priceRange]);
 
-  // Función para actualizar filtros
+  
   const updateFilters = (key, value) => {
     const params = new URLSearchParams(searchParams);
     
@@ -139,7 +139,7 @@ const PlatformPage = ({ platformSlug, title, description }) => {
     
     setSearchParams(params);
     
-    // Actualizar estado local
+    
     switch (key) {
       case 'category':
         setSelectedCategory(value);
@@ -155,19 +155,19 @@ const PlatformPage = ({ platformSlug, title, description }) => {
     }
   };
 
-  // Función para mostrar el modal con detalles del juego
+  
   const showGameDetails = (game) => {
     setSelectedGame(game);
     setShowModal(true);
   };
 
-  // Función para agregar directamente al carrito
+  
   const handleAddToCart = (game, event) => {
-    event.stopPropagation(); // Evitar que el clic se propague
+    event.stopPropagation(); 
     addToCart(game);
   };
 
-  // Componente de tarjeta de juego
+  
   const GameCard = ({ game }) => {
     const getCategoryName = (categoryId) => {
       const category = categories.find(c => c.id === categoryId);
@@ -236,18 +236,18 @@ const PlatformPage = ({ platformSlug, title, description }) => {
     );
   };
 
-  // Función para actualizar plataformas
+  
   const handleUpdatePlatforms = async () => {
     try {
       setUpdating(true);
       setUpdateMessage('Actualizando plataformas...');
       
-      // Actualizar plataformas
+      
       await initializePlatforms();
       
       setUpdateMessage('¡Plataformas actualizadas! Recargando...');
       
-      // Esperar un momento y recargar
+      
       setTimeout(() => {
         window.location.reload();
       }, 1500);
@@ -346,7 +346,7 @@ const PlatformPage = ({ platformSlug, title, description }) => {
         </div>
       ) : (
         <Row>
-          {/* Sidebar de filtros */}
+          
           <Col lg={3} className="mb-4">
             <Card>
               <Card.Header>
@@ -413,7 +413,7 @@ const PlatformPage = ({ platformSlug, title, description }) => {
             </Card>
           </Col>
 
-          {/* Lista de juegos */}
+          
           <Col lg={9}>
             <p className="mb-4">Mostrando {games.length} juegos para {platform?.name}</p>
             
@@ -428,7 +428,7 @@ const PlatformPage = ({ platformSlug, title, description }) => {
         </Row>
       )}
       
-      {/* Modal para detalles del juego */}
+      
       <GameModal 
         show={showModal} 
         onHide={() => setShowModal(false)} 

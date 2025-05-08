@@ -1,21 +1,21 @@
 :root {
-  /* Colores principales */
+  
   --primary-yellow: #F4A300;
   --dark-orange: #C56D00;
   --black: #000000;
   --light-gray: #D9D9D9;
   
-  /* Colores de botones */
+  
   --button-red: #FF4B4B;
   --button-green: #3CE35B;
   --button-blue: #3C9AE3;
   --button-yellow: #FFD600;
 
-  /* Gradientes */
+  
   --primary-gradient: linear-gradient(135deg, var(--primary-yellow) 0%, var(--dark-orange) 100%);
   --dark-gradient: linear-gradient(135deg, #1a1a1a 0%, var(--dark-orange) 100%);
   
-  /* Sombras */
+  
   --primary-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   --hover-shadow: 0 4px 8px rgba(197, 109, 0, 0.3);
 } 

@@ -1,4 +1,4 @@
-/* Estilos para las cards de ofertas */
+
 .deal-card {
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Contenedor de imagen */
+
 .deal-card-image-container {
   position: relative;
   padding: 15px 15px 5px;
@@ -47,7 +47,7 @@
   font-size: 0.8rem;
 }
 
-/* Contenido de la card */
+
 .deal-card-content {
   padding: 15px;
   display: flex;
@@ -145,7 +145,7 @@
   background-color: #e67e22;
 }
 
-/* Ajustes para pantallas pequeñas */
+
 @media (max-width: 576px) {
   .deal-card-image-container {
     min-height: 160px;

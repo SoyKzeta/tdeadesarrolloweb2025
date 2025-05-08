@@ -25,7 +25,7 @@ const Admin = () => {
   const [success, setSuccess] = useState('');
   const [message, setMessage] = useState('');
 
-  // Cargar datos con useCallback para evitar dependencias circulares
+  
   const loadData = useCallback(async () => {
     if (!isAdmin()) return;
     
@@ -53,12 +53,12 @@ const Admin = () => {
     }
   }, [isAdmin]);
 
-  // Comprobar si el usuario es administrador y cargar datos
+  
   useEffect(() => {
     loadData();
   }, [loadData]);
 
-  // Eliminar juego
+  
   const handleDeleteGame = async (gameId) => {
     if (!window.confirm('¿Estás seguro de que quieres eliminar este juego?')) {
       return;
@@ -71,7 +71,7 @@ const Admin = () => {
       
       await deleteGame(gameId);
       
-      // Actualizar la lista de juegos
+      
       const updatedGames = games.filter(game => game.id !== gameId);
       setGames(updatedGames);
       
@@ -84,7 +84,7 @@ const Admin = () => {
     }
   };
 
-  // Eliminar accesorio
+  
   const handleDeleteAccessory = async (accessoryId) => {
     if (!window.confirm('¿Estás seguro de que quieres eliminar este accesorio?')) {
       return;
@@ -97,7 +97,7 @@ const Admin = () => {
       
       await deleteAccessory(accessoryId);
       
-      // Actualizar la lista de accesorios
+      
       const updatedAccessories = accessories.filter(accessory => accessory.id !== accessoryId);
       setAccessories(updatedAccessories);
       
@@ -110,7 +110,7 @@ const Admin = () => {
     }
   };
 
-  // Eliminar tarjeta de regalo
+  
   const handleDeleteGiftCard = async (giftCardId) => {
     if (!window.confirm('¿Estás seguro de que quieres eliminar esta tarjeta de regalo?')) {
       return;
@@ -123,7 +123,7 @@ const Admin = () => {
       
       await deleteGiftCard(giftCardId);
       
-      // Actualizar la lista de tarjetas de regalo
+      
       const updatedGiftCards = giftCards.filter(giftCard => giftCard.id !== giftCardId);
       setGiftCards(updatedGiftCards);
       
@@ -222,7 +222,7 @@ const Admin = () => {
         </Col>
       </Row>
       
-      {/* Sección de Accesorios */}
+      
       <Row className="mb-4">
         <Col>
           <Card>
@@ -282,7 +282,7 @@ const Admin = () => {
         </Col>
       </Row>
       
-      {/* Sección de Tarjetas de Regalo */}
+      
       <Row className="mb-4">
         <Col>
           <Card>

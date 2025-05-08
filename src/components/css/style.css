@@ -1,9 +1,9 @@
-/* Estilo para elementos con cursor pointer */
+
 .cursor-pointer {
   cursor: pointer;
 }
 
-/* Estilos para tarjetas en hover */
+
 .game-card.cursor-pointer:hover,
 .category-card.cursor-pointer:hover,
 .platform-card.cursor-pointer:hover {
@@ -12,7 +12,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Estilos para botones del carrito */
+
 .cart-link {
   position: relative;
 }
@@ -33,7 +33,7 @@
   font-weight: bold;
 }
 
-/* Animación para mensajes de toast de confirmación */
+
 .Toastify__toast-container {
   z-index: 9999;
 }

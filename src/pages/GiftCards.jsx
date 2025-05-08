@@ -18,7 +18,7 @@ const GiftCards = () => {
   const { formatPrice } = useCurrency();
   const { addToCart } = useCart();
 
-  // Filtros
+  
   const [selectedPlatform, setSelectedPlatform] = useState(searchParams.get('platform') || '');
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'price');
   const [priceRange, setPriceRange] = useState(searchParams.get('price') || '');
@@ -26,7 +26,7 @@ const GiftCards = () => {
   useEffect(() => {
     const loadFilters = async () => {
       try {
-        // Cargar plataformas
+        
         const platformsData = await getPlatforms();
         setPlatforms(platformsData);
       } catch (err) {
@@ -43,22 +43,22 @@ const GiftCards = () => {
       setLoading(true);
       
       try {
-        // Preparar opciones de filtrado
+        
         const options = {
           sortBy: sortBy || 'price',
           sortDirection: 'asc',
           itemLimit: 100
         };
         
-        // Aplicar filtro de plataforma si está seleccionado
+        
         if (selectedPlatform) {
           options.platformId = selectedPlatform;
         }
         
-        // Obtener tarjetas de regalo
+        
         let giftCardsData = await getGiftCards(options);
         
-        // Aplicar filtro de precio si está seleccionado
+        
         if (priceRange) {
           const [min, max] = priceRange.split('-').map(Number);
           giftCardsData = giftCardsData.filter(giftCard => {
@@ -80,7 +80,7 @@ const GiftCards = () => {
     loadGiftCards();
   }, [selectedPlatform, sortBy, priceRange]);
 
-  // Función para actualizar filtros y búsqueda
+  
   const updateFilters = (key, value) => {
     const params = new URLSearchParams(searchParams);
     
@@ -92,7 +92,7 @@ const GiftCards = () => {
     
     setSearchParams(params);
     
-    // Actualizar estado local
+    
     switch (key) {
       case 'platform':
         setSelectedPlatform(value);
@@ -108,19 +108,19 @@ const GiftCards = () => {
     }
   };
 
-  // Función para mostrar el modal con detalles de la tarjeta de regalo
+  
   const showGiftCardDetails = (giftCard) => {
     setSelectedGiftCard(giftCard);
     setShowModal(true);
   };
 
-  // Función para agregar directamente al carrito
+  
   const handleAddToCart = (giftCard, event) => {
-    event.stopPropagation(); // Evitar que el clic se propague
+    event.stopPropagation(); 
     addToCart(giftCard);
   };
 
-  // Componente de tarjeta de regalo
+  
   const GiftCardItem = ({ giftCard }) => {
     const platformName = platforms.find(p => p.id === giftCard.platformId)?.name || 'Desconocido';
     
@@ -178,7 +178,7 @@ const GiftCards = () => {
       <h1 className="mb-4">Tarjetas de Regalo</h1>
       
       <Row>
-        {/* Sidebar de filtros */}
+        
         <Col lg={3} className="mb-4">
           <Card>
             <Card.Header>
@@ -244,7 +244,7 @@ const GiftCards = () => {
           </Card>
         </Col>
         
-        {/* Lista de tarjetas de regalo */}
+        
         <Col lg={9}>
           {loading ? (
             <div className="text-center py-5">
@@ -282,7 +282,7 @@ const GiftCards = () => {
         </Col>
       </Row>
       
-      {/* Modal para detalles de la tarjeta de regalo */}
+      
       <GameModal 
         show={showModal} 
         onHide={() => setShowModal(false)} 

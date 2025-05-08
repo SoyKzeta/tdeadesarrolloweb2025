@@ -1,6 +1,6 @@
 @import './variables.css';
 
-/* Estilos generales del cuerpo */
+
 body {
   background-color: #111111;
   color: #f0f0f0;
@@ -11,12 +11,12 @@ body {
   padding-bottom: 2rem;
 }
 
-/* Estilos para las secciones con fondo */
+
 .py-5 {
   background-color: #111111;
 }
 
-/* Estilos para los títulos de sección */
+
 .section-title {
   color: var(--primary-yellow);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -37,7 +37,7 @@ body {
   border-radius: 4px;
 }
 
-/* Estilos del Navbar */
+
 .navbar {
   background: var(--black) !important;
   box-shadow: var(--primary-shadow);
@@ -79,7 +79,7 @@ body {
   text-shadow: 0 0 8px rgba(244, 163, 0, 0.4);
 }
 
-/* Hero Section */
+
 .hero-section {
   background: var(--dark-gradient);
   min-height: 60vh;
@@ -97,7 +97,7 @@ body {
   color: var(--light-gray);
 }
 
-/* Estilos para las tarjetas de juegos */
+
 .game-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: none;
@@ -136,7 +136,7 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Estilos para las tarjetas de categorías */
+
 .category-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: none;
@@ -196,7 +196,7 @@ body {
   z-index: 2;
 }
 
-/* Badges y etiquetas */
+
 .badge.bg-primary {
   background-color: var(--button-blue) !important;
 }
@@ -205,7 +205,7 @@ body {
   color: var(--button-green) !important;
 }
 
-/* Botón del menú móvil */
+
 .navbar-toggler {
   border-color: var(--primary-yellow) !important;
 }
@@ -214,7 +214,7 @@ body {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(244, 163, 0, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
-/* Offcanvas menu styles */
+
 .offcanvas.bg-dark {
   background-color: var(--black) !important;
   border-left: 2px solid var(--primary-yellow);
@@ -234,13 +234,13 @@ body {
   border-bottom: none;
 }
 
-/* Ajustes del logo en el menú móvil */
+
 .offcanvas-header .offcanvas-title img {
   max-height: 55px;
   width: auto;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
   .navbar {
     min-height: 75px;
@@ -272,7 +272,7 @@ body {
   }
 }
 
-/* Contenedor de imágenes para mantener proporción */
+
 .img-hover-zoom {
   overflow: hidden;
   position: relative;
@@ -306,7 +306,7 @@ body {
   transform: scale(1.08);
 }
 
-/* Estilos para precios */
+
 .text-decoration-line-through {
   color: #999999 !important;
   font-weight: normal;
@@ -314,12 +314,12 @@ body {
   opacity: 0.9;
 }
 
-/* Ajuste para que el color de texto muted sea más visible */
+
 .text-muted {
   color: #999999 !important;
 }
 
-/* Estilos del carrito */
+
 .cart-link {
   position: relative;
   font-size: 1.25rem;
@@ -344,7 +344,7 @@ body {
   font-weight: bold;
 }
 
-/* Estilos del botón de login */
+
 .login-button {
   border-color: var(--primary-yellow) !important;
   color: var(--primary-yellow) !important;
@@ -360,7 +360,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* Ajustes responsive para el carrito y login */
+
 @media (max-width: 768px) {
   .cart-link {
     font-size: 1.1rem;
@@ -379,7 +379,7 @@ body {
   }
 }
 
-/* Estilos para las páginas de autenticación */
+
 .login-card,
 .signup-card {
   background: var(--black);
@@ -453,13 +453,13 @@ body {
   color: var(--dark-orange);
 }
 
-/* Texto de registro */
+
 .login-card .signup-text,
 .signup-card .signup-text {
   color: white;
 }
 
-/* Botones de redes sociales */
+
 .social-btn {
   width: 48px;
   height: 48px;
@@ -479,7 +479,7 @@ body {
   box-shadow: var(--primary-shadow);
 }
 
-/* Estilos del carrito */
+
 .cart-item-image {
   max-width: 100px;
   height: auto;
@@ -540,7 +540,7 @@ body {
   transform: scale(1.1);
 }
 
-/* Estilos para la sección de estadísticas (Stats Banner) */
+
 .stats-banner {
   background: var(--black);
   border-top: 2px solid var(--primary-yellow);
@@ -565,7 +565,7 @@ body {
   color: var(--light-gray);
 }
 
-/* Estilos para las categorías */
+
 .category-card {
   background: var(--black);
   border: 2px solid var(--primary-yellow);
@@ -586,7 +586,7 @@ body {
   transform: scale(1.1);
 }
 
-/* Estilos para la sección de newsletter */
+
 .newsletter-section {
   background: var(--dark-gradient);
   border-top: 2px solid var(--primary-yellow);
@@ -615,7 +615,7 @@ body {
   color: white;
 }
 
-/* Mejoras para los botones de productos */
+
 .game-card .btn {
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -654,7 +654,7 @@ body {
   letter-spacing: 0.03em;
 }
 
-/* Mejoras para dispositivos móviles */
+
 @media (max-width: 768px) {
   .stat-number {
     font-size: 1.5rem;
@@ -669,7 +669,7 @@ body {
   }
 }
 
-/* Estilos para el nuevo navbar y buscador */
+
 .search-bar-container {
   flex-grow: 1;
   max-width: 500px;
@@ -749,7 +749,7 @@ body {
   text-shadow: 0 0 10px rgba(255, 75, 75, 0.5);
 }
 
-/* Ajustes para móviles */
+
 @media (max-width: 992px) {
   .mobile-search-container {
     border-bottom: 2px solid var(--primary-yellow);
@@ -801,7 +801,7 @@ body {
   border-radius: 4px;
 }
 
-/* Badges para descuentos y nuevos juegos */
+
 .discount-badge {
   position: absolute;
   top: 12px;
@@ -830,7 +830,7 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Estilos para plataformas */
+
 .platform-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: none;
@@ -879,7 +879,7 @@ body {
   object-fit: contain;
 }
 
-/* Panel de filtros y Cards generales */
+
 .card {
   border: none;
   border-radius: 12px;
@@ -908,7 +908,7 @@ body {
   color: #f0f0f0;
 }
 
-/* Estilos para los formularios de filtro */
+
 .form-control, .form-select {
   background-color: #2a2a2a;
   border: 1px solid #333;
@@ -930,7 +930,7 @@ body {
   margin-bottom: 0.5rem;
 }
 
-/* Botones de filtro */
+
 .btn-outline-secondary {
   border-color: #444;
   color: #e0e0e0;
@@ -942,7 +942,7 @@ body {
   color: #111;
 }
 
-/* Badges para plataformas */
+
 .badge.bg-primary {
   background-color: var(--button-blue) !important;
   padding: 0.5em 0.8em;
@@ -966,7 +966,7 @@ body {
   object-fit: contain;
 }
 
-/* Estilos para tablas admin */
+
 .table {
   color: #f0f0f0;
   background-color: #1a1a1a;
@@ -1003,7 +1003,7 @@ body {
   background-color: #333333;
 }
 
-/* Formularios en Admin */
+
 .form-check-label {
   color: #f0f0f0 !important;
 }
@@ -1022,12 +1022,12 @@ body {
   color: #aaaaaa !important;
 }
 
-/* Estilo para elementos con cursor pointer */
+
 .cursor-pointer {
   cursor: pointer;
 }
 
-/* Estilos para tarjetas en hover */
+
 .game-card.cursor-pointer:hover,
 .category-card.cursor-pointer:hover,
 .platform-card.cursor-pointer:hover {
@@ -1036,7 +1036,7 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Estilos para el Modal de Checkout */
+
 .checkout-modal .modal-content {
   background-color: #f8f9fa;
   border-radius: 10px;
@@ -1119,7 +1119,7 @@ body {
   padding: 1rem 1.5rem;
 }
 
-/* Estilos específicos para los radio buttons del método de pago */
+
 .checkout-modal .payment-methods .form-check-input[type="radio"] {
   background-color: #fff;
   border: 1px solid #000;
@@ -1137,8 +1137,8 @@ body {
   margin-bottom: 8px;
 }
 
-/* Quitar flechas incrementales de los inputs number */
-/* Para Chrome, Safari, Edge, Opera */
+
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -1146,13 +1146,13 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-/* Para Firefox */
+
 input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
 
-/* Estilos específicos para el input de cantidad en el carrito */
+
 .quantity-control .form-control {
   background-color: #fff;
   color: #000;
@@ -1172,7 +1172,7 @@ input[type="number"] {
   background-color: #e9ecef;
 }
 
-/* Estilo específico para la etiqueta de pago */
+
 .payment-option-label {
   color: #000000 !important;
   font-weight: 600 !important;

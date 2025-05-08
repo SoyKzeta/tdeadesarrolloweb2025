@@ -11,7 +11,7 @@ const Games = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   
-  // Filtros
+  
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
   const [selectedPlatform, setSelectedPlatform] = useState(searchParams.get('platform') || '');
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'rating');
@@ -20,12 +20,14 @@ const Games = () => {
   useEffect(() => {
     const loadFilters = async () => {
       try {
-        // Cargar categorías
-        const categoriesData = await getCategories();
-        setCategories(categoriesData);
         
-        // Cargar plataformas
-        const platformsData = await getPlatforms();
+        const [categoriesData, platformsData] = await Promise.all([
+          getCategories(),
+          getPlatforms()
+        ]);
+        
+        console.log('Games: Categorías cargadas', categoriesData.length);
+        setCategories(categoriesData);
         setPlatforms(platformsData);
       } catch (err) {
         console.error('Error al cargar filtros:', err);
@@ -41,14 +43,14 @@ const Games = () => {
       setLoading(true);
       
       try {
-        // Preparar opciones de filtrado
+        
         const options = {
           sortBy: sortBy || 'rating',
           sortDirection: 'desc',
           itemLimit: 100
         };
         
-        // Aplicar filtros de categoría y plataforma si están seleccionados
+        
         if (selectedCategory) {
           options.categoryId = selectedCategory;
         }
@@ -57,10 +59,10 @@ const Games = () => {
           options.platformId = selectedPlatform;
         }
         
-        // Obtener juegos
+        
         let gamesData = await getGames(options);
         
-        // Aplicar filtro de precio si está seleccionado
+        
         if (priceRange) {
           const [min, max] = priceRange.split('-').map(Number);
           gamesData = gamesData.filter(game => {
@@ -85,7 +87,7 @@ const Games = () => {
     loadGames();
   }, [selectedCategory, selectedPlatform, sortBy, priceRange]);
 
-  // Función para actualizar filtros y búsqueda
+  
   const updateFilters = (key, value) => {
     const params = new URLSearchParams(searchParams);
     
@@ -97,7 +99,7 @@ const Games = () => {
     
     setSearchParams(params);
     
-    // Actualizar estado local
+    
     switch (key) {
       case 'category':
         setSelectedCategory(value);
@@ -116,7 +118,7 @@ const Games = () => {
     }
   };
 
-  // Función para formatear precio con descuento
+  
   const formatPrice = (price, discount) => {
     if (discount && discount > 0) {
       const discountedPrice = price - (price * (discount / 100));
@@ -130,9 +132,9 @@ const Games = () => {
     return <span className="text-success fw-bold">${price.toFixed(2)}</span>;
   };
 
-  // Componente de tarjeta de juego
+  
   const GameCard = ({ game, platforms }) => {
-    // Obtener plataforma completa
+    
     const platform = platforms.find(p => p.id === game.platformId);
     const platformName = platform ? platform.name : 'Desconocido';
     
@@ -176,7 +178,7 @@ const Games = () => {
       <h1 className="mb-4">Catálogo de Juegos</h1>
       
       <Row>
-        {/* Sidebar de filtros */}
+        
         <Col lg={3} className="mb-4">
           <Card>
             <Card.Header>
@@ -191,7 +193,11 @@ const Games = () => {
                     onChange={(e) => updateFilters('category', e.target.value)}
                   >
                     <option value="">Todas las categorías</option>
-                    {categories.map(category => (
+                    {categories
+                      .filter((category, index, self) => 
+                        index === self.findIndex(c => c.slug === category.slug)
+                      )
+                      .map(category => (
                       <option key={category.id} value={category.id}>
                         {category.name}
                       </option>
@@ -259,7 +265,7 @@ const Games = () => {
           </Card>
         </Col>
         
-        {/* Lista de juegos */}
+        
         <Col lg={9}>
           {loading ? (
             <div className="text-center py-5">

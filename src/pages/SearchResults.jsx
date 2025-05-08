@@ -30,7 +30,7 @@ const SearchResults = () => {
         setAccessories(results.accessories || []);
         setGiftCards(results.giftCards || []);
         
-        // Establecer la pestaña activa basada en los resultados
+        
         if (results.games?.length > 0) {
           setActiveTab('games');
         } else if (results.accessories?.length > 0) {
@@ -51,7 +51,7 @@ const SearchResults = () => {
     performSearch();
   }, [searchQuery]);
 
-  // Función para formatear precio con descuento
+  
   const formatPrice = (price, discount) => {
     if (discount && discount > 0) {
       const discountedPrice = price - (price * (discount / 100));
@@ -65,7 +65,7 @@ const SearchResults = () => {
     return <span className="text-success fw-bold">${price.toFixed(2)}</span>;
   };
 
-  // Componente de tarjeta de juego
+  
   const GameCard = ({ game }) => {
     return (
       <Card className="game-card h-100">
@@ -102,7 +102,7 @@ const SearchResults = () => {
     );
   };
 
-  // Componente de tarjeta de accesorio
+  
   const AccessoryCard = ({ accessory }) => {
     return (
       <Card className="game-card h-100">
@@ -139,7 +139,7 @@ const SearchResults = () => {
     );
   };
 
-  // Componente de tarjeta de regalo
+  
   const GiftCardItem = ({ giftCard }) => {
     return (
       <Card className="game-card h-100">
@@ -174,7 +174,7 @@ const SearchResults = () => {
     );
   };
 
-  // Contar resultados totales
+  
   const totalResults = games.length + accessories.length + giftCards.length;
 
   return (

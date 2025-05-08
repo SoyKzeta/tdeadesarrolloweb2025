@@ -13,7 +13,7 @@ const PlatformForm = () => {
   const [success, setSuccess] = useState('');
   const [platforms, setPlatforms] = useState([]);
   
-  // Estado del formulario
+  
   const [formValues, setFormValues] = useState({
     name: '',
     slug: '',
@@ -22,17 +22,17 @@ const PlatformForm = () => {
     order: 0
   });
 
-  // Cargar datos iniciales
+  
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
         
-        // Cargar todas las plataformas
+        
         const platformsData = await getPlatforms();
         setPlatforms(platformsData);
         
-        // Si estamos en modo edición, buscar y cargar la plataforma por ID
+        
         if (isEditMode) {
           const platform = platformsData.find(plat => plat.id === id);
           if (platform) {
@@ -47,7 +47,7 @@ const PlatformForm = () => {
             setError('No se encontró la plataforma solicitada');
           }
         } else {
-          // Si es modo crear, establecer el siguiente orden automáticamente
+          
           const maxOrder = platformsData.reduce((max, platform) => {
             return platform.order > max ? platform.order : max;
           }, 0);
@@ -67,7 +67,7 @@ const PlatformForm = () => {
     loadData();
   }, [id, isEditMode]);
 
-  // Generar slug automáticamente a partir del nombre
+  
   const generateSlug = (name) => {
     return name
       .toLowerCase()
@@ -83,11 +83,11 @@ const PlatformForm = () => {
       .trim();
   };
 
-  // Manejar cambios en inputs del formulario
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    // Si es el nombre, generar el slug automáticamente
+    
     if (name === 'name') {
       setFormValues({
         ...formValues,
@@ -95,7 +95,7 @@ const PlatformForm = () => {
         slug: generateSlug(value)
       });
     } else if (name === 'order') {
-      // Asegurarnos de que el valor es numérico
+      
       const numValue = parseInt(value, 10) || 0;
       setFormValues({
         ...formValues,
@@ -109,7 +109,7 @@ const PlatformForm = () => {
     }
   };
 
-  // Manejar envío del formulario
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -118,40 +118,40 @@ const PlatformForm = () => {
       setError('');
       setSuccess('');
       
-      // Validación básica
+      
       if (!formValues.name || !formValues.color) {
         setError('Por favor, completa todos los campos obligatorios');
         setSaving(false);
         return;
       }
       
-      // Aquí iríamos la lógica para guardar la plataforma
-      // Como no está implementada completamente en firestore.js, solo mostramos un mensaje
       
-      // Simular respuesta exitosa
+      
+      
+      
       setTimeout(() => {
         if (isEditMode) {
           setSuccess('Plataforma actualizada con éxito');
           
-          // Redirigir al panel de administración después de un breve retraso
+          
           setTimeout(() => {
             navigate('/admin');
           }, 1500);
         } else {
           setSuccess('Plataforma agregada con éxito');
           
-          // Redirigir al panel de administración después de un breve retraso
+          
           setTimeout(() => {
             navigate('/admin');
           }, 1500);
           
-          // Limpiar formulario (aunque no es necesario si redirigimos)
+          
           setFormValues({
             name: '',
             slug: '',
             logo: '',
             color: '#0070D1',
-            order: formValues.order + 1 // Incrementar el orden para la siguiente
+            order: formValues.order + 1 
           });
         }
         setSaving(false);
@@ -164,12 +164,12 @@ const PlatformForm = () => {
     }
   };
 
-  // Volver a la página anterior
+  
   const handleCancel = () => {
     navigate('/admin');
   };
 
-  // Opciones de logos
+  
   const logoOptions = [
     { name: 'PlayStation 5', value: 'ps5_logo' },
     { name: 'PlayStation 4', value: 'ps4_logo' },
@@ -325,7 +325,7 @@ const PlatformForm = () => {
                               No hay plataformas disponibles
                             </div>
                           ) : (
-                            // Ordenar las plataformas por el campo order
+                            
                             [...platforms].sort((a, b) => a.order - b.order).map(platform => (
                               <div key={platform.id} className="list-group-item">
                                 <div className="d-flex align-items-center justify-content-between">

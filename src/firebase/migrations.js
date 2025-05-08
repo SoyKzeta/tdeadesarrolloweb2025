@@ -1,7 +1,7 @@
 import { collection, addDoc, getDocs, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
 import { db } from './config';
 
-// Colecciones
+
 const CATEGORIES_COLLECTION = 'categories';
 const PLATFORMS_COLLECTION = 'platforms';
 const GAMES_COLLECTION = 'games';
@@ -124,7 +124,7 @@ const initialPlatforms = [
  */
 export const initializeCategories = async () => {
   try {
-    // Verificar si ya existen categorías
+    
     const categoriesSnapshot = await getDocs(collection(db, CATEGORIES_COLLECTION));
     if (!categoriesSnapshot.empty) {
       console.log('Las categorías ya están inicializadas');
@@ -138,7 +138,7 @@ export const initializeCategories = async () => {
       return existingCategories;
     }
 
-    // Si no existen, crear las categorías iniciales
+    
     const categoryIds = [];
     for (const category of initialCategories) {
       const docRef = await addDoc(collection(db, CATEGORIES_COLLECTION), {
@@ -165,14 +165,14 @@ export const initializeCategories = async () => {
  */
 export const initializePlatforms = async () => {
   try {
-    // Verificar si ya existen plataformas
+    
     const platformsSnapshot = await getDocs(collection(db, PLATFORMS_COLLECTION));
     
-    // Actualizar plataformas existentes o crear nuevas si no existen
+    
     if (!platformsSnapshot.empty) {
       console.log('Actualizando plataformas con nuevos slugs...');
       
-      // Obtener las plataformas existentes para referencia
+      
       const existingPlatforms = [];
       platformsSnapshot.forEach(doc => {
         existingPlatforms.push({
@@ -187,12 +187,12 @@ export const initializePlatforms = async () => {
         slug: p.slug
       })), null, 2));
       
-      // Actualizar todas las plataformas existentes y/o crear nuevas
+      
       const platformIds = [];
       
-      // Primero, actualizar todas las plataformas existentes
+      
       for (const existingPlatform of existingPlatforms) {
-        // Buscar la versión actualizada en initialPlatforms
+        
         const updatedPlatform = initialPlatforms.find(p => p.name === existingPlatform.name);
         
         if (updatedPlatform) {
@@ -201,7 +201,7 @@ export const initializePlatforms = async () => {
           console.log(`Slug anterior: ${existingPlatform.slug || 'ninguno'}`);
           
           try {
-            // Actualizar el documento
+            
             const platformRef = doc(db, PLATFORMS_COLLECTION, existingPlatform.id);
             await updateDoc(platformRef, {
               ...updatedPlatform,
@@ -220,9 +220,9 @@ export const initializePlatforms = async () => {
         }
       }
       
-      // Luego, crear las plataformas que no existen
+      
       for (const platform of initialPlatforms) {
-        // Verificar si ya existe
+        
         const exists = existingPlatforms.some(p => p.name === platform.name);
         
         if (!exists) {
@@ -254,7 +254,7 @@ export const initializePlatforms = async () => {
       return platformIds;
     }
 
-    // Si no existen, crear las plataformas iniciales
+    
     console.log('No hay plataformas, creando todas las iniciales');
     const platformIds = [];
     for (const platform of initialPlatforms) {
@@ -291,7 +291,7 @@ export const initializePlatforms = async () => {
 export const initializeSampleGames = async (categories, platforms) => {
   try {
     console.log('Verificando si ya existen juegos...');
-    // Verificar si ya existen juegos
+    
     const gamesSnapshot = await getDocs(collection(db, GAMES_COLLECTION));
     if (!gamesSnapshot.empty) {
       console.log('Ya existen juegos en la base de datos');
@@ -299,7 +299,7 @@ export const initializeSampleGames = async (categories, platforms) => {
     }
 
     console.log('Preparando juegos de ejemplo...');
-    // Buscar categorías y plataformas por slug
+    
     const findCategoryId = (slug) => {
       const category = categories.find(cat => cat.slug === slug);
       if (!category) console.log(`Categoría no encontrada para slug: ${slug}`);
@@ -312,7 +312,7 @@ export const initializeSampleGames = async (categories, platforms) => {
       return platform ? platform.id : null;
     };
 
-    // Juegos de ejemplo
+    
     const sampleGames = [
       {
         title: 'God of War Ragnarök',
@@ -331,7 +331,7 @@ export const initializeSampleGames = async (categories, platforms) => {
         is_featured: true,
         is_new: false,
         is_upcoming: false,
-        imageUrl: 'https://upload.wikimedia.org/wikipedia/en/e/ee/God_of_War_Ragnar%C3%B6k_cover.jpg'
+        imageUrl: 'https://via.placeholder.com/300x450'
       },
       {
         title: 'Zelda: Tears of the Kingdom',
@@ -350,7 +350,7 @@ export const initializeSampleGames = async (categories, platforms) => {
         is_featured: true,
         is_new: true,
         is_upcoming: false,
-        imageUrl: 'https://upload.wikimedia.org/wikipedia/en/f/fb/The_Legend_of_Zelda_Tears_of_the_Kingdom_cover.jpg'
+        imageUrl: 'https://via.placeholder.com/300x450'
       },
       {
         title: 'Forza Horizon 5',
@@ -369,7 +369,7 @@ export const initializeSampleGames = async (categories, platforms) => {
         is_featured: false,
         is_new: false,
         is_upcoming: false,
-        imageUrl: 'https://upload.wikimedia.org/wikipedia/en/8/8c/Forza_Horizon_5_cover_art.jpg'
+        imageUrl: 'https://via.placeholder.com/300x450'
       },
       {
         title: 'Elden Ring',
@@ -388,12 +388,12 @@ export const initializeSampleGames = async (categories, platforms) => {
         is_featured: true,
         is_new: false,
         is_upcoming: false,
-        imageUrl: 'https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_art.jpg'
+        imageUrl: 'https://via.placeholder.com/300x450'
       }
     ];
 
     console.log('Creando juegos en Firestore...');
-    // Crear los juegos en Firestore
+    
     for (const game of sampleGames) {
       console.log(`Creando juego: ${game.title}`);
       console.log(`Categorías del juego: ${JSON.stringify(game.categoryIds)}`);
@@ -423,7 +423,7 @@ export const initializeSampleGames = async (categories, platforms) => {
 export const initializeSampleAccessories = async (categories, platforms) => {
   try {
     console.log('Verificando si ya existen accesorios...');
-    // Verificar si ya existen accesorios
+    
     const accessoriesSnapshot = await getDocs(collection(db, ACCESSORIES_COLLECTION));
     if (!accessoriesSnapshot.empty) {
       console.log('Ya existen accesorios en la base de datos');
@@ -431,14 +431,14 @@ export const initializeSampleAccessories = async (categories, platforms) => {
     }
 
     console.log('Preparando accesorios de ejemplo...');
-    // Buscar plataformas por slug
+    
     const findPlatformId = (slug) => {
       const platform = platforms.find(plat => plat.slug === slug);
       if (!platform) console.log(`Plataforma no encontrada para slug: ${slug}`);
       return platform ? platform.id : null;
     };
 
-    // Accesorios de ejemplo
+    
     const sampleAccessories = [
       {
         name: 'DualSense Wireless Controller',
@@ -450,7 +450,7 @@ export const initializeSampleAccessories = async (categories, platforms) => {
         platformId: findPlatformId('ps5'),
         is_new: true,
         discount: 0,
-        imageUrl: 'https://gmedia.playstation.com/is/image/SIEPDC/dualsense-thumbnail-ps5-01-en-17jul20?$facebook$'
+        imageUrl: 'https://via.placeholder.com/300x450'
       },
       {
         name: 'Xbox Elite Wireless Controller Series 2',
@@ -462,7 +462,7 @@ export const initializeSampleAccessories = async (categories, platforms) => {
         platformId: findPlatformId('xbox'),
         is_new: false,
         discount: 10,
-        imageUrl: 'https://m.media-amazon.com/images/I/61LfZhhYN8L._AC_SX679_.jpg'
+        imageUrl: 'https://via.placeholder.com/300x450'
       },
       {
         name: 'Logitech G Pro X Gaming Headset',
@@ -474,7 +474,7 @@ export const initializeSampleAccessories = async (categories, platforms) => {
         platformId: findPlatformId('pc'),
         is_new: false,
         discount: 15,
-        imageUrl: 'https://resource.logitechg.com/w_695,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/pro-x/pro-headset-gallery-1.png?v=1'
+        imageUrl: 'https://via.placeholder.com/300x450'
       },
       {
         name: 'Razer BlackWidow V3 Pro',
@@ -486,7 +486,7 @@ export const initializeSampleAccessories = async (categories, platforms) => {
         platformId: findPlatformId('pc'),
         is_new: true,
         discount: 0,
-        imageUrl: 'https://assets3.razerzone.com/GdX7-fR7OL8xMWrB1T0qLgC8qxs=/1500x1000/https%3A%2F%2Fhybrismediaprod.blob.core.windows.net%2Fsys-master-phoenix-images-container%2Fh89%2Fh7d%2F9081444392990%2F211019-blackwidow-v3-pro-black-1500x1000-1.jpg'
+        imageUrl: 'https://via.placeholder.com/300x450'
       },
       {
         name: 'Nintendo Switch Pro Controller',
@@ -498,12 +498,12 @@ export const initializeSampleAccessories = async (categories, platforms) => {
         platformId: findPlatformId('switch'),
         is_new: false,
         discount: 5,
-        imageUrl: 'https://assets.nintendo.com/image/upload/ar_16:9,b_auto:border,c_lpad/b_white/f_auto/q_auto/dpr_auto/c_scale,w_700/v1/ncom/en_US/products/accessories/nintendo-switch/controllers/nintendo-switch-pro-controller/110701-nintendo-switch-pro-controller-front'
+        imageUrl: 'https://via.placeholder.com/300x450'
       }
     ];
 
     console.log('Creando accesorios en Firestore...');
-    // Crear los accesorios en Firestore
+    
     for (const accessory of sampleAccessories) {
       console.log(`Creando accesorio: ${accessory.name}`);
       await addDoc(collection(db, ACCESSORIES_COLLECTION), {
@@ -529,7 +529,7 @@ export const initializeSampleAccessories = async (categories, platforms) => {
 export const initializeSampleGiftCards = async (platforms) => {
   try {
     console.log('Verificando si ya existen tarjetas de regalo...');
-    // Verificar si ya existen tarjetas de regalo
+    
     const giftCardsSnapshot = await getDocs(collection(db, GIFT_CARDS_COLLECTION));
     if (!giftCardsSnapshot.empty) {
       console.log('Ya existen tarjetas de regalo en la base de datos');
@@ -537,14 +537,14 @@ export const initializeSampleGiftCards = async (platforms) => {
     }
 
     console.log('Preparando tarjetas de regalo de ejemplo...');
-    // Buscar plataformas por slug
+    
     const findPlatformId = (slug) => {
       const platform = platforms.find(plat => plat.slug === slug);
       if (!platform) console.log(`Plataforma no encontrada para slug: ${slug}`);
       return platform ? platform.id : null;
     };
 
-    // Tarjetas de regalo de ejemplo
+    
     const sampleGiftCards = [
       {
         name: 'PlayStation Store Gift Card $20',
@@ -555,7 +555,7 @@ export const initializeSampleGiftCards = async (platforms) => {
         stock: 100,
         platformId: findPlatformId('ps5'),
         is_digital: true,
-        imageUrl: 'https://media.direct.playstation.com/is/image/sierialto/psn-gift-card-20-product-tile-01-us'
+        imageUrl: 'https://via.placeholder.com/300x450'
       },
       {
         name: 'Xbox Gift Card $50',
@@ -566,7 +566,7 @@ export const initializeSampleGiftCards = async (platforms) => {
         stock: 100,
         platformId: findPlatformId('xbox'),
         is_digital: true,
-        imageUrl: 'https://assets.xboxservices.com/assets/63/57/6357bb4d-f386-4873-becf-14c7bb420976.jpg'
+        imageUrl: 'https://via.placeholder.com/300x450'
       },
       {
         name: 'Nintendo eShop Card $25',
@@ -577,7 +577,7 @@ export const initializeSampleGiftCards = async (platforms) => {
         stock: 100,
         platformId: findPlatformId('switch'),
         is_digital: true,
-        imageUrl: 'https://assets.nintendo.com/image/upload/ar_16:9,b_auto:border,c_lpad/b_white/f_auto/q_auto/dpr_auto/c_scale,w_700/v1/ncom/en_US/products/prepaid/nintendo-eshop-funds/115560-nintendo-eshop-25-us-25-digital'
+        imageUrl: 'https://via.placeholder.com/300x450'
       },
       {
         name: 'Steam Gift Card $100',
@@ -588,12 +588,12 @@ export const initializeSampleGiftCards = async (platforms) => {
         stock: 50,
         platformId: findPlatformId('pc'),
         is_digital: true,
-        imageUrl: 'https://cdn.cloudflare.steamstatic.com/steam/clusters/frontpage/688fe2d0c9ea0baccfd09cc3/page_bg_english.jpg'
+        imageUrl: 'https://via.placeholder.com/300x450'
       }
     ];
 
     console.log('Creando tarjetas de regalo en Firestore...');
-    // Crear las tarjetas de regalo en Firestore
+    
     for (const giftCard of sampleGiftCards) {
       console.log(`Creando tarjeta de regalo: ${giftCard.name}`);
       await addDoc(collection(db, GIFT_CARDS_COLLECTION), {
@@ -621,7 +621,7 @@ export const initializeDatabase = async () => {
   let hasError = false;
   let errorMessage = '';
 
-  // Inicializar categorías con manejo de errores
+  
   try {
     console.log('Inicializando categorías...');
     categories = await initializeCategories();
@@ -632,7 +632,7 @@ export const initializeDatabase = async () => {
     errorMessage += `Error en categorías: ${categoryError.message}. `;
   }
   
-  // Inicializar plataformas con manejo de errores
+  
   try {
     console.log('Inicializando plataformas...');
     platforms = await initializePlatforms();
@@ -643,7 +643,7 @@ export const initializeDatabase = async () => {
     errorMessage += `Error en plataformas: ${platformError.message}. `;
   }
   
-  // Solo inicializar juegos si tenemos categorías y plataformas
+  
   if (categories.length > 0 && platforms.length > 0) {
     try {
       console.log('Inicializando juegos de ejemplo...');
@@ -655,7 +655,7 @@ export const initializeDatabase = async () => {
       errorMessage += `Error en juegos: ${gameError.message}. `;
     }
     
-    // Inicializar accesorios
+    
     try {
       console.log('Inicializando accesorios de ejemplo...');
       await initializeSampleAccessories(categories, platforms);
@@ -666,7 +666,7 @@ export const initializeDatabase = async () => {
       errorMessage += `Error en accesorios: ${accessoryError.message}. `;
     }
     
-    // Inicializar tarjetas de regalo
+    
     try {
       console.log('Inicializando tarjetas de regalo de ejemplo...');
       await initializeSampleGiftCards(platforms);
@@ -680,7 +680,7 @@ export const initializeDatabase = async () => {
     console.log('No se pueden inicializar productos sin categorías y plataformas');
   }
   
-  // Devolver resultado adecuado
+  
   if (hasError) {
     if (categories.length > 0 || platforms.length > 0) {
       console.log('Inicialización parcialmente exitosa');

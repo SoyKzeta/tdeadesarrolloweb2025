@@ -6,7 +6,7 @@ import { useCurrency } from '../contexts/useCurrency.js';
 import { useCart } from '../contexts/useCart.js';
 import GameModal from '../components/GameModal';
 
-// Importar logos de plataformas
+
 import PlaystationLogo from '../assets/logos/ps4_logo.png';
 import PlaystationLogo5 from '../assets/logos/ps5_logo.png';
 import XboxLogo from '../assets/logos/xbox_logo.png';
@@ -14,7 +14,7 @@ import NintendoLogo from '../assets/logos/switch_logo.png';
 import PCLogo from '../assets/logos/pc_gaming.png';
 import FondoBienvenido from '../assets/logos/fondo_bienvenido.png';
 
-// Mapeo de plataformas a sus logos
+
 const platformLogos = {
   'playstation': PlaystationLogo,
   'playstation-4': PlaystationLogo,
@@ -31,16 +31,16 @@ const platformLogos = {
   'pc-gaming': PCLogo
 };
 
-// Función para obtener el logo de la plataforma según su slug
+
 const getPlatformLogo = (platformSlug) => {
   if (!platformSlug) return null;
   
-  // Si el slug es exactamente "playstation-5" o "ps5", usar directamente el logo de PS5
+  
   if (platformSlug === "playstation-5" || platformSlug === "ps5") {
     return PlaystationLogo5;
   }
   
-  // Para otros casos, buscar coincidencias parciales en las claves
+  
   const matchingKey = Object.keys(platformLogos).find(key => 
     platformSlug.toLowerCase().includes(key.toLowerCase())
   );
@@ -60,7 +60,7 @@ const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  // Usar el contexto de moneda y carrito
+  
   const { formatPrice } = useCurrency();
   const { addToCart } = useCart();
 
@@ -69,15 +69,17 @@ const Home = () => {
       try {
         setLoading(true);
         
-        // Cargar categorías
-        const categoriesData = await getCategories();
-        setCategories(categoriesData);
         
-        // Cargar plataformas
-        const platformsData = await getPlatforms();
+        const [categoriesData, platformsData] = await Promise.all([
+          getCategories(),
+          getPlatforms()
+        ]);
+        
+        console.log('Home: Categorías cargadas', categoriesData.length);
+        setCategories(categoriesData);
         setPlatforms(platformsData);
         
-        // Cargar juegos destacados
+        
         const featuredGamesData = await getGames({ 
           sortBy: 'rating',
           sortDirection: 'desc',
@@ -85,7 +87,7 @@ const Home = () => {
         });
         setFeaturedGames(featuredGamesData.filter(game => game.is_featured));
         
-        // Cargar juegos nuevos
+        
         const newGamesData = await getGames({
           sortBy: 'createdAt',
           sortDirection: 'desc',
@@ -93,7 +95,7 @@ const Home = () => {
         });
         setNewGames(newGamesData.filter(game => game.is_new));
         
-        // Cargar juegos con descuento
+        
         const discountedGamesData = await getGames({
           sortBy: 'discount',
           sortDirection: 'desc',
@@ -112,7 +114,7 @@ const Home = () => {
     loadData();
   }, []);
 
-  // Función para formatear precio con descuento
+  
   const formatGamePrice = (price, discount) => {
     if (discount && discount > 0) {
       const discountedPrice = price - (price * (discount / 100));
@@ -130,35 +132,35 @@ const Home = () => {
     return <span className="text-success fw-bold">{formatPrice(price)}</span>;
   };
 
-  // Función para obtener nombre de plataforma
+  
   const getPlatformName = (platformId) => {
     const platform = platforms.find(p => p.id === platformId);
     return platform ? platform.name : 'Desconocido';
   };
 
-  // Función para mostrar el modal con detalles del juego
+  
   const showGameDetails = (game) => {
     setSelectedGame(game);
     setShowModal(true);
   };
 
-  // Función para agregar directamente al carrito
+  
   const handleAddToCart = (game, event) => {
-    event.stopPropagation(); // Evitar que el clic se propague
+    event.stopPropagation(); 
     addToCart(game);
   };
 
-  // Navegación mejorada para categorías
+  
   const navigateToCategory = (categorySlug) => {
     navigate(`/category/${categorySlug}`);
   };
 
-  // Navegación mejorada para plataformas
+  
   const navigateToPlatform = (platformSlug) => {
     navigate(`/platform/${platformSlug}`);
   };
 
-  // Mostrar spinner mientras carga
+  
   if (loading) {
     return (
       <Container className="text-center py-5">
@@ -170,7 +172,7 @@ const Home = () => {
     );
   }
 
-  // Mostrar error si ocurre
+  
   if (error) {
     return (
       <Container className="text-center py-5">
@@ -184,7 +186,7 @@ const Home = () => {
 
   return (
     <>
-      {/* Hero Section */}
+      
       <div className="hero-section">
         <Container>
           <Row className="align-items-center">
@@ -202,7 +204,7 @@ const Home = () => {
         </Container>
       </div>
 
-      {/* Stats Banner */}
+      
       <div className="stats-banner py-3">
         <Container>
           <Row className="text-center">
@@ -234,11 +236,16 @@ const Home = () => {
         </Container>
       </div>
 
-      {/* Categories Section */}
+      
       <Container className="py-5">
         <h2 className="section-title text-center">Categorías</h2>
         <Row className="g-4 mb-5 justify-content-center">
-          {categories.map(category => (
+          
+          {categories
+            .filter((category, index, self) => 
+              index === self.findIndex(c => c.slug === category.slug)
+            )
+            .map(category => (
             <Col key={category.id} xs={6} md={3}>
               <Card 
                 className="category-card text-center h-100 cursor-pointer"
@@ -253,7 +260,7 @@ const Home = () => {
                     variant="outline-warning" 
                     className="mt-2"
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevenir que el clic se propague a la card
+                      e.stopPropagation(); 
                       navigateToCategory(category.slug);
                     }}
                   >
@@ -265,7 +272,7 @@ const Home = () => {
           ))}
         </Row>
 
-        {/* Plataformas */}
+        
         <h2 className="section-title text-center">Plataformas</h2>
         <Row className="g-4 mb-5 justify-content-center">
           {platforms.map(platform => {
@@ -294,7 +301,7 @@ const Home = () => {
                       variant="outline-warning" 
                       className="mt-2"
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevenir que el clic se propague a la card
+                        e.stopPropagation(); 
                         navigateToPlatform(platform.slug);
                       }}
                     >
@@ -307,7 +314,7 @@ const Home = () => {
           })}
         </Row>
 
-        {/* Featured Games Section */}
+        
         <h2 className="section-title text-center">Juegos Destacados</h2>
         <Row xs={1} sm={2} md={3} className="g-4 mb-5">
           {featuredGames.map(game => (
@@ -361,7 +368,7 @@ const Home = () => {
           ))}
         </Row>
 
-        {/* New Games Section */}
+        
         <h2 className="section-title text-center">Novedades</h2>
         <Row xs={1} sm={2} md={3} className="g-4 mb-5">
           {newGames.length > 0 ? (
@@ -420,7 +427,7 @@ const Home = () => {
           )}
         </Row>
 
-        {/* Discounted Games */}
+        
         <h2 className="section-title text-center">Ofertas</h2>
         <Row xs={1} sm={2} md={3} className="g-4 mb-5">
           {discountedGames.length > 0 ? (
@@ -480,7 +487,7 @@ const Home = () => {
         </Row>
       </Container>
 
-      {/* Modal para detalles del juego */}
+      
       <GameModal 
         show={showModal} 
         onHide={() => setShowModal(false)} 

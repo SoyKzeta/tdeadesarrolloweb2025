@@ -13,7 +13,7 @@ const CategoryForm = () => {
   const [success, setSuccess] = useState('');
   const [categories, setCategories] = useState([]);
   
-  // Estado del formulario
+  
   const [formValues, setFormValues] = useState({
     name: '',
     slug: '',
@@ -22,17 +22,17 @@ const CategoryForm = () => {
     description: ''
   });
 
-  // Cargar datos iniciales
+  
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
         
-        // Cargar todas las categorías
+        
         const categoriesData = await getCategories();
         setCategories(categoriesData);
         
-        // Si estamos en modo edición, buscar y cargar la categoría por ID
+        
         if (isEditMode) {
           const category = categoriesData.find(cat => cat.id === id);
           if (category) {
@@ -58,7 +58,7 @@ const CategoryForm = () => {
     loadData();
   }, [id, isEditMode]);
 
-  // Generar slug automáticamente a partir del nombre
+  
   const generateSlug = (name) => {
     return name
       .toLowerCase()
@@ -74,11 +74,11 @@ const CategoryForm = () => {
       .trim();
   };
 
-  // Manejar cambios en inputs del formulario
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    // Si es el nombre, generar el slug automáticamente
+    
     if (name === 'name') {
       setFormValues({
         ...formValues,
@@ -93,7 +93,7 @@ const CategoryForm = () => {
     }
   };
 
-  // Manejar envío del formulario
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -102,14 +102,14 @@ const CategoryForm = () => {
       setError('');
       setSuccess('');
       
-      // Validación básica
+      
       if (!formValues.name || !formValues.icon || !formValues.color) {
         setError('Por favor, completa todos los campos obligatorios');
         setSaving(false);
         return;
       }
       
-      // Preparar datos para guardar
+      
       const categoryData = {
         name: formValues.name,
         slug: formValues.slug,
@@ -118,27 +118,27 @@ const CategoryForm = () => {
         description: formValues.description
       };
       
-      // Guardar datos (añadir o actualizar)
+      
       if (isEditMode) {
-        // Aquí iría la lógica para actualizar una categoría existente
-        // Como no está implementada en firestore.js, por ahora solo mostramos un mensaje
+        
+        
         setSuccess('Categoría actualizada con éxito');
         
-        // Redirigir al panel de administración después de un breve retraso
+        
         setTimeout(() => {
           navigate('/admin');
         }, 1500);
       } else {
-        // Añadir nueva categoría
+        
         const newId = await addCategory(categoryData);
         setSuccess(`Categoría agregada con éxito (ID: ${newId})`);
         
-        // Redirigir al panel de administración después de un breve retraso
+        
         setTimeout(() => {
           navigate('/admin');
         }, 1500);
         
-        // Limpiar formulario (aunque no es necesario si redirigimos)
+        
         setFormValues({
           name: '',
           slug: '',
@@ -155,12 +155,12 @@ const CategoryForm = () => {
     }
   };
 
-  // Volver a la página anterior
+  
   const handleCancel = () => {
     navigate('/admin');
   };
 
-  // Opciones de iconos (FontAwesome)
+  
   const iconOptions = [
     { name: 'Acción', value: 'fas fa-running' },
     { name: 'Aventura', value: 'fas fa-map-marked-alt' },

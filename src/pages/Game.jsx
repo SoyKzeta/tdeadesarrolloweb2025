@@ -17,11 +17,11 @@ const Game = () => {
     const fetchGame = async () => {
       try {
         setLoading(true);
-        // En una implementación real, habría una función para obtener el juego por slug
-        // Por ahora, obtenemos todos los juegos y filtramos
-        await getGameById('game-id'); // Este ID debería obtenerse mediante una consulta por slug
         
-        // Simulamos que encontramos el juego
+        
+        await getGameById('game-id'); 
+        
+        
         setGame({
           id: 'game-id',
           title: 'The Last of Us Part II',
@@ -41,7 +41,7 @@ const Game = () => {
           ],
           features: ['Modo historia', 'Un jugador', 'Compatible con PS5', 'Vibración del mando'],
           rating: 9.5,
-          imageUrl: 'https://firebasestorage.googleapis.com/v0/b/gameshop-39326.appspot.com/o/games%2Fthe-last-of-us-part-ii.jpg?alt=media',
+          imageUrl: 'https://via.placeholder.com/300x450',
           stock: 15,
           is_featured: true,
           is_new: false
@@ -57,13 +57,13 @@ const Game = () => {
     fetchGame();
   }, [slug]);
 
-  // Calcular precio con descuento
+  
   const calculateDiscountedPrice = (price, discount) => {
     if (!discount) return price;
     return price - (price * (discount / 100));
   };
 
-  // Función para añadir al carrito
+  
   const handleAddToCart = () => {
     addToCart(game);
   };
@@ -97,7 +97,7 @@ const Game = () => {
     );
   }
 
-  // Precio original y con descuento
+  
   const originalPrice = game.price;
   const discountedPrice = calculateDiscountedPrice(game.price, game.discount);
 
@@ -107,7 +107,7 @@ const Game = () => {
         <Col lg={6} className="mb-4">
           <div className="position-relative">
             <img 
-              src={game.imageUrl || 'https://via.placeholder.com/600x400?text=No+image'} 
+              src={game.imageUrl || 'https://via.placeholder.com/300x450'}
               alt={game.title} 
               className="img-fluid rounded shadow"
               style={{ width: '100%', maxHeight: '500px', objectFit: 'cover' }}

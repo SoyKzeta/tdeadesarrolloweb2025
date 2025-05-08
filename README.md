@@ -6,6 +6,8 @@
 
 GameShop es una tienda en línea especializada en la venta de videojuegos, accesorios y tarjetas de regalo para diferentes plataformas. Esta aplicación web permite a los usuarios explorar catálogos, filtrar por categorías y plataformas, gestionar un carrito de compras, y completar el proceso de compra de manera intuitiva.
 
+El proyecto ha sido desarrollado como parte del curso de desarrollo web, implementando las mejores prácticas de programación y arquitectura de software moderna.
+
 ## Características Principales
 
 - 🎮 Catálogo completo de videojuegos para diferentes plataformas
@@ -13,77 +15,75 @@ GameShop es una tienda en línea especializada en la venta de videojuegos, acces
 - 💳 Venta de tarjetas de regalo digitales
 - 🔍 Sistema de búsqueda y filtrado avanzado
 - 🛒 Carrito de compras persistente
-- 💰 Múltiples opciones de pago
-- 👤 Gestión de cuentas de usuario
-- 🌐 Soporte para múltiples monedas
+- 💰 Soporte para múltiples monedas con COP (Peso Colombiano) como moneda principal
+- 👤 Gestión de cuentas de usuario (registro, inicio de sesión, perfil)
+- 📱 Diseño responsive adaptado a dispositivos móviles y de escritorio
+- 🔐 Panel de administración para gestión de productos, categorías y pedidos
 
 ## Tecnologías Utilizadas
 
 ### Frameworks y Librerías Principales
 
-- **React**: Biblioteca JavaScript para construir interfaces de usuario.
-- **Vite**: Herramienta de construcción que proporciona un entorno de desarrollo más rápido.
-- **Firebase**: Plataforma de desarrollo de aplicaciones que proporciona:
-  - **Firestore**: Base de datos NoSQL para almacenar productos, usuarios y órdenes.
-  - **Authentication**: Sistema de autenticación para gestionar usuarios.
-  - **Storage**: Almacenamiento de archivos para imágenes de productos.
-- **React Router**: Navegación entre páginas en la aplicación de una sola página (SPA).
-- **React Bootstrap**: Framework de UI basado en Bootstrap para React.
-- **React-Toastify**: Biblioteca para mostrar notificaciones elegantes.
+- **React 18**: Biblioteca JavaScript moderna para construir interfaces de usuario basadas en componentes.
+- **Vite**: Herramienta de construcción ultrarrápida que mejora significativamente los tiempos de desarrollo.
+- **Firebase 10**: Plataforma completa de desarrollo que proporciona:
+  - **Firestore**: Base de datos NoSQL en tiempo real para almacenar productos, usuarios y órdenes.
+  - **Authentication**: Sistema seguro de autenticación con múltiples proveedores.
+  - **Storage**: Almacenamiento escalable de archivos para imágenes de productos.
+  - **Rules**: Implementación de reglas de seguridad personalizadas para proteger los datos.
+- **React Router v6**: Sistema de navegación declarativo para aplicaciones React.
+- **React Bootstrap 5**: Framework de UI componentes basado en Bootstrap 5 para React.
+- **React-Toastify**: Sistema de notificaciones elegantes y configurables.
 
-### Librerías Adicionales
+### Librerías y Herramientas Adicionales
 
-- **Context API**: Sistema de gestión de estado para manejar el carrito, autenticación y preferencias de moneda.
-- **Font Awesome**: Conjunto de iconos vectoriales y estilos CSS.
-- **ESLint**: Herramienta de análisis de código estático para identificar patrones problemáticos.
+- **Context API**: Implementación avanzada para gestión de estado global (carrito, autenticación, moneda).
+- **Font Awesome 6**: Extensa biblioteca de iconos vectoriales modernos.
+- **ESLint**: Herramienta de análisis de código estático para mantener la calidad del código.
+- **Intl.NumberFormat**: API nativa para formato de precios en múltiples monedas.
+- **Local Storage**: Almacenamiento en el navegador para persistencia de datos del usuario.
 
-## Conceptos Clave
+## Sistema de Monedas
 
-### Slugs
-Un "slug" es una versión amigable para URLs de un string, típicamente un título. Se utiliza en las rutas de la aplicación para identificar recursos específicos de manera legible. Por ejemplo, el juego "Grand Theft Auto V" tendría un slug como "grand-theft-auto-v".
+GameShop implementa un sistema de múltiples monedas que permite a los usuarios ver los precios en diferentes divisas:
 
-### Firebase Collections
-La aplicación utiliza colecciones en Firestore para organizar los datos:
-- **games**: Almacena la información de todos los videojuegos.
-- **categories**: Contiene categorías como "Acción", "Aventura", etc.
-- **platforms**: Almacena plataformas como PlayStation, Xbox, PC, etc.
-- **accessories**: Colección para los accesorios de gaming.
-- **giftCards**: Contiene información sobre tarjetas de regalo disponibles.
-- **users**: Almacena los datos de los usuarios registrados.
-- **orders**: Guarda información sobre las órdenes realizadas.
+- **COP (Peso Colombiano)**: Moneda principal del sistema y predeterminada para todos los formularios de administración.
+- **USD (Dólar Estadounidense)**: Moneda secundaria con tipo de cambio actualizado.
+- **MXN (Peso Mexicano)**: Soporte para el mercado mexicano.
+- **EUR (Euro)**: Soporte para el mercado europeo.
+- **ARS (Peso Argentino)**: Soporte para el mercado argentino.
+- **CLP (Peso Chileno)**: Soporte para el mercado chileno.
+- **PEN (Sol Peruano)**: Soporte para el mercado peruano.
+- **BRL (Real Brasileño)**: Soporte para el mercado brasileño.
 
-### Hot Module Replacement (HMR)
-Tecnología que permite actualizar módulos de JavaScript en tiempo real mientras la aplicación está en ejecución, sin necesidad de recargar la página completa. Esto acelera significativamente el proceso de desarrollo.
+Los precios se ingresan en COP en el panel de administración y se convierten automáticamente a las diferentes monedas según la preferencia del usuario.
 
-### Fast Refresh
-Característica en React que preserva el estado de los componentes al editar sus archivos, proporcionando retroalimentación instantánea durante el desarrollo.
+## Arquitectura del Proyecto
 
-## Estructura del Proyecto
+### Patrón de Diseño
 
-```
-gameShop/
-├── public/              # Archivos estáticos servidos directamente
-├── src/                 # Código fuente
-│   ├── assets/          # Imágenes, logos y recursos estáticos
-│   ├── components/      # Componentes reutilizables
-│   ├── contexts/        # Contextos de React (carrito, autenticación, moneda)
-│   ├── firebase/        # Configuración y utilidades de Firebase
-│   ├── layouts/         # Estructuras de diseño reutilizables
-│   ├── pages/           # Componentes de página
-│   │   ├── admin/       # Páginas del panel de administración
-│   │   └── platforms/   # Páginas específicas de plataformas
-│   └── styles/          # Archivos CSS y variables de estilo
-└── index.html           # Punto de entrada HTML
-```
+El proyecto sigue el patrón de arquitectura de componentes de React con una clara separación de responsabilidades:
+
+- **Componentes**: Unidades visuales reutilizables (botones, tarjetas, etc.)
+- **Páginas**: Componentes de alto nivel que representan rutas completas
+- **Contextos**: Gestión de estado global con React Context API
+- **Servicios**: Funciones para interactuar con APIs externas (Firebase)
+- **Hooks personalizados**: Lógica reutilizable para componentes
+
+
+## Características del Panel de Administración
+
+El panel de administración incluye:
+
+- **Gestión de Productos**: Formularios para añadir y editar:
+  - Juegos con detalles completos (título, descripción, precio en COP, stock, categorías, etc.)
+  - Accesorios con especificaciones técnicas
+  - Tarjetas de regalo con valores y plataformas asociadas
+- **Gestión de Categorías**: Creación y edición de categorías con colores e iconos personalizados
+- **Gestión de Plataformas**: Administración de plataformas de juegos
+- **Visualización de Pedidos**: Panel para revisar y gestionar pedidos de clientes
 
 ## Instalación y Ejecución
-
-Para instalar y ejecutar localmente el proyecto:
-
-```bash
-# Clonar el repositorio
-git clone https://github.com/usuario/gameShop.git
-cd gameShop
 
 # Instalar dependencias
 npm install
@@ -91,22 +91,27 @@ npm install
 # Ejecutar el servidor de desarrollo
 npm run dev
 
-# Compilar para producción
-npm run build
-```
 
-## Funcionalidades para el Administrador
+## Objetivos de Aprendizaje Alcanzados
 
-El panel de administración permite:
-- Gestionar productos (añadir, editar, eliminar)
-- Administrar categorías y plataformas
-- Ver y gestionar pedidos
-- Monitorear inventario
+Este proyecto demuestra competencia en:
 
-## Licencia
+1. **Desarrollo Frontend Moderno**: Implementación de React con hooks y Context API
+2. **Arquitectura de Aplicaciones**: Estructura organizada y mantenible
+3. **Integración con Bases de Datos**: Uso eficiente de Firestore para almacenamiento
+4. **Autenticación y Seguridad**: Implementación de login y reglas de seguridad
+5. **Responsive Design**: Adaptación a diferentes dispositivos
+6. **Gestión de Estado**: Manejo eficiente del estado global y local
+7. **Internacionalización**: Sistema de múltiples monedas
+8. **Validación de Formularios**: Implementación de validaciones en formularios
 
-Este proyecto está licenciado bajo la Licencia MIT - ver el archivo LICENSE.md para más detalles.
+## Mejores Prácticas Implementadas
 
-## Contacto
+- **Code Splitting**: Carga eficiente de componentes según necesidad
+- **Componentes Reutilizables**: DRY (Don't Repeat Yourself) aplicado en todo el código
+- **Manejo de Errores**: Captura y presentación adecuada de errores
+- **Lazy Loading**: Carga diferida de imágenes y componentes
+- **Optimización de Rendimiento**: Uso apropiado de memoización y useCallback
+- **Convenciones de Nombrado**: Nomenclatura clara y consistente en todo el proyecto
 
-Para preguntas o soporte, contactar a: admin@gameshop.com
+

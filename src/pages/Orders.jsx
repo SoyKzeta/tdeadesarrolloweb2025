@@ -12,7 +12,7 @@ const Orders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Cargar los pedidos del usuario
+  
   useEffect(() => {
     const loadOrders = async () => {
       if (currentUser) {
@@ -31,7 +31,7 @@ const Orders = () => {
     loadOrders();
   }, [currentUser]);
 
-  // Formatear fecha
+  
   const formatDate = (timestamp) => {
     if (!timestamp) return 'Fecha no disponible';
     
@@ -45,7 +45,7 @@ const Orders = () => {
     });
   };
 
-  // Obtener el badge de estado según el estado del pedido
+  
   const getStatusBadge = (status) => {
     const statusMap = {
       'pending': { variant: 'warning', text: 'Pendiente' },
@@ -62,7 +62,7 @@ const Orders = () => {
     );
   };
 
-  // Calcular total del pedido
+  
   const calculateOrderTotal = (items) => {
     if (!items || !Array.isArray(items)) return 0;
     

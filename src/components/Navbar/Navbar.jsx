@@ -27,7 +27,7 @@ const Navbar = () => {
     }
   };
 
-  // Opciones de moneda disponibles
+  
   const currencies = [
     { code: 'COP', name: 'Peso Colombiano (COP)' },
     { code: 'USD', name: 'Dólar Estadounidense (USD)' },
@@ -41,7 +41,7 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Navbar para pantallas grandes */}
+      
       <BootstrapNavbar bg="dark" variant="dark" expand="lg" className="d-none d-lg-block">
         <Container>
           <BootstrapNavbar.Brand as={Link} to="/" className="d-flex align-items-center">
@@ -53,11 +53,11 @@ const Navbar = () => {
             />
           </BootstrapNavbar.Brand>
           
-          {/* Buscador */}
+          
           <SearchBar />
           
           <Nav className="ms-auto">
-            {/* Selector de moneda */}
+            
             <Dropdown align="end" className="me-3">
               <Dropdown.Toggle variant="outline-info" id="dropdown-currency" size="sm">
                 <i className="fas fa-money-bill-wave me-1"></i> {currency}
@@ -81,7 +81,7 @@ const Navbar = () => {
               <span className="cart-count">{cartCount}</span>
             </Nav.Link>
             
-            {/* Panel de Admin - solo visible para administradores */}
+            
             {isAdmin() && (
               <Nav.Link as={Link} to="/admin" className="me-3">
                 <i className="fas fa-cog"></i>
@@ -97,7 +97,7 @@ const Navbar = () => {
                 <Dropdown.Menu className="dropdown-menu-dark">
                   <Dropdown.Item as={Link} to="/profile">Mi Perfil</Dropdown.Item>
                   
-                  {/* Menú específico para administrador */}
+                  
                   {isAdmin() ? (
                     <Dropdown.Item as={Link} to="/admin">Administrar</Dropdown.Item>
                   ) : (
@@ -119,7 +119,7 @@ const Navbar = () => {
         </Container>
       </BootstrapNavbar>
 
-      {/* Categorías */}
+      
       <Nav className="category-nav d-none d-lg-flex">
         <Container>
           <div className="d-flex">
@@ -151,7 +151,7 @@ const Navbar = () => {
         </Container>
       </Nav>
 
-      {/* Navbar para móviles */}
+      
       <BootstrapNavbar bg="dark" variant="dark" className="d-lg-none">
         <Container>
           <BootstrapNavbar.Brand as={Link} to="/" className="d-flex align-items-center">
@@ -163,7 +163,7 @@ const Navbar = () => {
             />
           </BootstrapNavbar.Brand>
           <Nav className="ms-auto me-2">
-            {/* Selector de moneda para móvil */}
+            
             <Dropdown align="end" className="me-2">
               <Dropdown.Toggle variant="outline-info" id="dropdown-currency-mobile" size="sm">
                 {currency}
@@ -195,14 +195,14 @@ const Navbar = () => {
         </Container>
       </BootstrapNavbar>
 
-      {/* Buscador móvil */}
+      
       <div className="mobile-search-container d-lg-none">
         <Container className="py-2">
           <SearchBar />
         </Container>
       </div>
 
-      {/* Menú lateral para móviles */}
+      
       <Offcanvas show={show} onHide={handleClose} placement="end" className="bg-dark">
         <Offcanvas.Header closeButton closeVariant="white">
           <Offcanvas.Title className="text-white">
@@ -216,7 +216,7 @@ const Navbar = () => {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Nav className="flex-column">
-            {/* Selector de moneda en el menú lateral */}
+            
             <div className="mb-3">
               <h6 className="text-warning mb-2">Moneda</h6>
               <Form.Select 
@@ -248,7 +248,7 @@ const Navbar = () => {
                   <i className="fas fa-user me-2"></i> Mi Perfil
                 </Nav.Link>
 
-                {/* Opciones específicas según el tipo de usuario */}
+                
                 {isAdmin() ? (
                   <Nav.Link as={Link} to="/admin" className="text-white" onClick={handleClose}>
                     <i className="fas fa-cog me-2"></i> Administrar
@@ -272,7 +272,7 @@ const Navbar = () => {
 
             <div className="border-top border-secondary my-3"></div>
 
-            {/* Links de plataformas */}
+            
             <h6 className="text-warning mb-3 mt-2">Plataformas</h6>
             <Nav.Link as={Link} to="/ps5" className="text-white" onClick={handleClose}>
               PlayStation 5
@@ -290,7 +290,7 @@ const Navbar = () => {
               Xbox
             </Nav.Link>
 
-            {/* Links de categorías */}
+            
             <div className="border-top border-secondary my-3"></div>
             <h6 className="text-warning mb-3">Categorías</h6>
             <Nav.Link as={Link} to="/accessories" className="text-white" onClick={handleClose}>

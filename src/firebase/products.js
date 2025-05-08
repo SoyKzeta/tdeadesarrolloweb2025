@@ -13,7 +13,7 @@ import { db } from './config';
 
 const productsCollection = 'products';
 
-// Obtener todos los productos
+
 export const getAllProducts = async () => {
   const querySnapshot = await getDocs(collection(db, productsCollection));
   return querySnapshot.docs.map(doc => ({
@@ -22,7 +22,7 @@ export const getAllProducts = async () => {
   }));
 };
 
-// Obtener productos por categoría
+
 export const getProductsByCategory = async (category) => {
   const q = query(
     collection(db, productsCollection), 
@@ -35,7 +35,7 @@ export const getProductsByCategory = async (category) => {
   }));
 };
 
-// Obtener un producto específico
+
 export const getProduct = async (productId) => {
   const docRef = doc(db, productsCollection, productId);
   const docSnap = await getDoc(docRef);
@@ -48,7 +48,7 @@ export const getProduct = async (productId) => {
   return null;
 };
 
-// Agregar un nuevo producto
+
 export const addProduct = async (productData) => {
   const docRef = await addDoc(collection(db, productsCollection), {
     ...productData,
@@ -59,7 +59,7 @@ export const addProduct = async (productData) => {
   return docRef.id;
 };
 
-// Actualizar un producto
+
 export const updateProduct = async (productId, productData) => {
   const docRef = doc(db, productsCollection, productId);
   await updateDoc(docRef, {
@@ -69,7 +69,7 @@ export const updateProduct = async (productId, productData) => {
   });
 };
 
-// Eliminar un producto
+
 export const deleteProduct = async (productId) => {
   const docRef = doc(db, productsCollection, productId);
   await deleteDoc(docRef);

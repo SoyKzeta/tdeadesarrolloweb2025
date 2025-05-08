@@ -21,7 +21,7 @@ const Profile = () => {
   });
   const [error, setError] = useState('');
 
-  // Cargar el perfil del usuario
+  
   useEffect(() => {
     const loadProfile = async () => {
       if (currentUser) {
@@ -41,7 +41,7 @@ const Profile = () => {
     loadProfile();
   }, [currentUser]);
 
-  // Manejar cambios en el formulario
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedProfile(prev => ({
@@ -50,7 +50,7 @@ const Profile = () => {
     }));
   };
 
-  // Manejar cambios en el formulario de dirección
+  
   const handleAddressInputChange = (e) => {
     const { name, value } = e.target;
     setNewAddress(prev => ({
@@ -59,7 +59,7 @@ const Profile = () => {
     }));
   };
 
-  // Guardar perfil
+  
   const handleSaveProfile = async () => {
     try {
       await updateUserProfile(currentUser.uid, editedProfile);
@@ -72,10 +72,10 @@ const Profile = () => {
     }
   };
 
-  // Añadir dirección
+  
   const handleAddAddress = async () => {
     try {
-      // Validar que todos los campos estén completos
+      
       const requiredFields = ['name', 'address', 'city', 'state', 'zipCode', 'phone'];
       const missingFields = requiredFields.filter(field => !newAddress[field]);
       
@@ -86,12 +86,12 @@ const Profile = () => {
 
       await addShippingAddress(currentUser.uid, newAddress);
       
-      // Recargar el perfil
+      
       const updatedProfile = await getUserProfile(currentUser.uid);
       setProfile(updatedProfile);
       setEditedProfile(updatedProfile);
       
-      // Limpiar formulario y cerrar modal
+      
       setNewAddress({
         name: '',
         address: '',
@@ -110,13 +110,13 @@ const Profile = () => {
     }
   };
 
-  // Eliminar dirección
+  
   const handleDeleteAddress = async (addressId) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar esta dirección?')) {
       try {
         await deleteShippingAddress(currentUser.uid, addressId);
         
-        // Recargar el perfil
+        
         const updatedProfile = await getUserProfile(currentUser.uid);
         setProfile(updatedProfile);
         setEditedProfile(updatedProfile);
@@ -257,7 +257,7 @@ const Profile = () => {
         </Col>
       </Row>
 
-      {/* Modal para agregar dirección */}
+      
       <Modal 
         show={showAddressModal} 
         onHide={() => {

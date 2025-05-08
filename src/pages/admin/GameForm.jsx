@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Form, Button, Container, Row, Col, Card, Alert, Spinner } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Card, Alert, Spinner, InputGroup } from 'react-bootstrap';
 import { getGameById, addGame, updateGame, getCategories, getPlatforms } from '../../firebase/firestore';
 
 const GameForm = () => {
@@ -16,7 +16,7 @@ const GameForm = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
   
-  // Estado del formulario
+  
   const [formValues, setFormValues] = useState({
     title: '',
     slug: '',
@@ -36,13 +36,13 @@ const GameForm = () => {
     is_upcoming: false
   });
 
-  // Cargar datos para el formulario (categorías, plataformas y datos del juego en modo edición)
+  
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
         
-        // Cargar categorías y plataformas
+        
         const [categoriesData, platformsData] = await Promise.all([
           getCategories(),
           getPlatforms()
@@ -51,11 +51,11 @@ const GameForm = () => {
         setCategories(categoriesData);
         setPlatforms(platformsData);
         
-        // Si estamos en modo edición, cargar datos del juego
+        
         if (isEditMode) {
           const gameData = await getGameById(id);
           if (gameData) {
-            // Convertir fecha a formato YYYY-MM-DD para el input
+            
             let releaseDate = '';
             if (gameData.release_date) {
               const date = gameData.release_date.toDate ? 
@@ -83,7 +83,7 @@ const GameForm = () => {
               is_upcoming: gameData.is_upcoming || false
             });
             
-            // Mostrar la imagen actual si existe
+            
             if (gameData.imageUrl) {
               setImagePreview(gameData.imageUrl);
             }
@@ -100,21 +100,21 @@ const GameForm = () => {
     loadData();
   }, [id, isEditMode]);
 
-  // Generar slug automáticamente a partir del título
+  
   const generateSlug = (title) => {
     return title
       .toLowerCase()
-      .replace(/[^\w\s-]/g, '') // Eliminar caracteres especiales
-      .replace(/\s+/g, '-') // Reemplazar espacios con guiones
-      .replace(/-+/g, '-') // Evitar múltiples guiones seguidos
+      .replace(/[^\w\s-]/g, '') 
+      .replace(/\s+/g, '-') 
+      .replace(/-+/g, '-') 
       .trim();
   };
 
-  // Manejar cambios en inputs del formulario
+  
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     
-    // Si es el título, generar el slug automáticamente
+    
     if (name === 'title') {
       setFormValues({
         ...formValues,
@@ -129,7 +129,7 @@ const GameForm = () => {
     }
   };
 
-  // Manejar cambios en selección múltiple de categorías
+  
   const handleCategoryChange = (e) => {
     const options = e.target.options;
     const selectedCategories = [];
@@ -144,13 +144,13 @@ const GameForm = () => {
     });
   };
 
-  // Manejar subida de imagen
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
       
-      // Crear una URL para previsualización
+      
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result);
@@ -159,7 +159,7 @@ const GameForm = () => {
     }
   };
 
-  // Manejar envío del formulario
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -168,14 +168,14 @@ const GameForm = () => {
       setError('');
       setSuccess('');
       
-      // Validación básica
+      
       if (!formValues.title || !formValues.description || !formValues.price || !formValues.platformId) {
         setError('Por favor, completa todos los campos obligatorios');
         setSaving(false);
         return;
       }
       
-      // Preparar datos para guardar en Firebase
+      
       const gameData = {
         title: formValues.title,
         slug: formValues.slug,
@@ -195,23 +195,23 @@ const GameForm = () => {
         is_upcoming: formValues.is_upcoming
       };
       
-      // Guardar datos (añadir o actualizar)
+      
       if (isEditMode) {
         await updateGame(id, gameData, imageFile);
         setSuccess('Juego actualizado con éxito');
-        // Redirigir al panel de administración después de un breve retraso
+        
         setTimeout(() => {
           navigate('/admin');
         }, 1500);
       } else {
         const newId = await addGame(gameData, imageFile);
         setSuccess(`Juego agregado con éxito (ID: ${newId})`);
-        // Redirigir al panel de administración después de un breve retraso
+        
         setTimeout(() => {
           navigate('/admin');
         }, 1500);
         
-        // Limpiar formulario después de agregar (no es necesario si redirigimos)
+        
         setFormValues({
           title: '',
           slug: '',
@@ -241,7 +241,7 @@ const GameForm = () => {
     }
   };
 
-  // Volver a la página anterior
+  
   const handleCancel = () => {
     navigate('/admin');
   };
@@ -308,16 +308,23 @@ const GameForm = () => {
                     <Row>
                       <Col md={6}>
                         <Form.Group className="mb-3">
-                          <Form.Label>Precio*</Form.Label>
-                          <Form.Control 
-                            type="number" 
-                            step="0.01" 
-                            min="0" 
-                            name="price" 
-                            value={formValues.price} 
-                            onChange={handleChange}
-                            required 
-                          />
+                          <Form.Label>Precio (COP)*</Form.Label>
+                          <InputGroup>
+                            <InputGroup.Text>COL$</InputGroup.Text>
+                            <Form.Control 
+                              type="number" 
+                              step="0.01" 
+                              min="0" 
+                              name="price" 
+                              value={formValues.price} 
+                              onChange={handleChange}
+                              required 
+                              placeholder="0.00"
+                            />
+                          </InputGroup>
+                          <Form.Text className="text-muted">
+                            Ingrese el precio en Pesos Colombianos (COP)
+                          </Form.Text>
                         </Form.Group>
                       </Col>
                       <Col md={6}>

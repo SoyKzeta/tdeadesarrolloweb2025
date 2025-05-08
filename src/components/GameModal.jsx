@@ -10,19 +10,19 @@ const GameModal = ({ show, onHide, game }) => {
 
   if (!game) return null;
 
-  // Función para manejar la adición al carrito
+  
   const handleAddToCart = () => {
     addToCart(game);
     onHide();
   };
 
-  // Calcular precio con descuento
+  
   const calculateDiscountedPrice = (price, discount) => {
     if (!discount) return price;
     return price - (price * (discount / 100));
   };
 
-  // Precio original y con descuento
+  
   const originalPrice = game.price;
   const discountedPrice = calculateDiscountedPrice(game.price, game.discount);
 
@@ -42,7 +42,7 @@ const GameModal = ({ show, onHide, game }) => {
           <Col md={5}>
             <div className="position-relative">
               <img
-                src={game.imageUrl || 'https://via.placeholder.com/400x300?text=No+image'}
+                src={game.imageUrl || 'https://via.placeholder.com/300x450'}
                 alt={game.title}
                 className="img-fluid rounded shadow"
                 style={{ width: '100%', objectFit: 'cover' }}

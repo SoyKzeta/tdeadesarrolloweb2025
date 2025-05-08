@@ -15,7 +15,7 @@ const CategoryGames = () => {
   const [platformsList, setPlatformsList] = useState([]);
   const { formatPrice } = useCurrency();
   
-  // Filtros
+  
   const [selectedPlatform, setSelectedPlatform] = useState(searchParams.get('platform') || '');
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'rating');
   const [priceRange, setPriceRange] = useState(searchParams.get('price') || '');
@@ -23,7 +23,7 @@ const CategoryGames = () => {
   useEffect(() => {
     const loadPlatforms = async () => {
       try {
-        // Cargar plataformas
+        
         const platformsData = await getPlatforms();
         setPlatformsList(platformsData);
       } catch (err) {
@@ -39,10 +39,11 @@ const CategoryGames = () => {
       try {
         setLoading(true);
         
-        // Obtener todas las categorías
-        const categories = await getCategories();
         
-        // Encontrar la categoría actual por su slug
+        const categories = await getCategories();
+        console.log('Categorías cargadas:', categories.length);
+        
+        
         const currentCategory = categories.find(cat => cat.slug === slug);
         
         if (!currentCategory) {
@@ -52,21 +53,21 @@ const CategoryGames = () => {
         
         setCategory(currentCategory);
         
-        // Obtener juegos para esta categoría
+        
         const options = {
           categoryId: currentCategory.id,
           sortBy: sortBy || 'rating',
           sortDirection: sortBy === 'price' ? 'asc' : 'desc'
         };
         
-        // Aplicar filtro de plataforma si está seleccionado
+        
         if (selectedPlatform) {
           options.platformId = selectedPlatform;
         }
         
         let gamesData = await getGames(options);
         
-        // Aplicar filtro de precio si está seleccionado
+        
         if (priceRange) {
           const [min, max] = priceRange.split('-').map(Number);
           gamesData = gamesData.filter(game => {
@@ -91,7 +92,7 @@ const CategoryGames = () => {
     loadCategoryAndGames();
   }, [slug, selectedPlatform, sortBy, priceRange]);
 
-  // Función para actualizar filtros
+  
   const updateFilters = (key, value) => {
     const params = new URLSearchParams(searchParams);
     
@@ -103,7 +104,7 @@ const CategoryGames = () => {
     
     setSearchParams(params);
     
-    // Actualizar estado local
+    
     switch (key) {
       case 'platform':
         setSelectedPlatform(value);
@@ -119,7 +120,7 @@ const CategoryGames = () => {
     }
   };
 
-  // Componente de tarjeta de juego
+  
   const GameCard = ({ game }) => {
     const getPlatformName = (platformId) => {
       const platform = platformsList.find(p => p.id === platformId);
@@ -174,7 +175,7 @@ const CategoryGames = () => {
     );
   };
 
-  // Mostrar spinner mientras carga
+  
   if (loading) {
     return (
       <Container className="text-center py-5">
@@ -186,7 +187,7 @@ const CategoryGames = () => {
     );
   }
 
-  // Mostrar error si ocurre
+  
   if (error) {
     return (
       <Container className="text-center py-5">
@@ -216,7 +217,7 @@ const CategoryGames = () => {
       </div>
       
       <Row>
-        {/* Sidebar de filtros */}
+        
         <Col lg={3} className="mb-4">
           <Card>
             <Card.Header>
@@ -284,7 +285,7 @@ const CategoryGames = () => {
           </Card>
         </Col>
         
-        {/* Lista de juegos */}
+        
         <Col lg={9}>
           {games.length === 0 ? (
             <div className="text-center py-5">
